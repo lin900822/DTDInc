@@ -38,20 +38,20 @@ public class PlayerMovementVer2 : MonoBehaviour
         
         if (Input.GetKey(KeyCode.W))
         {
-            transform.position += Time.deltaTime * speed * Vector3.forward;
+            transform.position += transform.TransformDirection( Time.deltaTime * speed * Vector3.forward);
         }
 
         if (Input.GetKey(KeyCode.S))
         {
-            transform.position += Time.deltaTime * speed * Vector3.back;
+            transform.position += transform.TransformDirection( Time.deltaTime * speed * Vector3.back);
         }
         if (Input.GetKey(KeyCode.A))
         {
-            transform.position += Time.deltaTime * speed * Vector3.left;
+            transform.position += transform.TransformDirection(Time.deltaTime * speed * Vector3.left);
         }
         if (Input.GetKey(KeyCode.D))
         {
-            transform.position += Time.deltaTime * speed * Vector3.right;
+            transform.position += transform.TransformDirection(Time.deltaTime * speed * Vector3.right);
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
