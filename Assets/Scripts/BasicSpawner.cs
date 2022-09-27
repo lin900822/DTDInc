@@ -42,8 +42,6 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         Vector3 spawnPosition = Vector3.one;
         NetworkObject networkPlayerObject = runner.Spawn(playerPrefab, spawnPosition, Quaternion.identity, player);
 
-        runner.SetPlayerObject(player, networkPlayerObject);
-
         playerList.Add(player, networkPlayerObject);
     }
 
@@ -56,7 +54,28 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         }
     }
 
-    public void OnInput(NetworkRunner runner, NetworkInput input) { }
+    public void OnInput(NetworkRunner runner, NetworkInput input)
+    {
+        var data = new NetworkInputData();
+
+        if (Input.GetKey(KeyCode.W))
+            data.movementInput += Vector3.forward;
+
+        if (Input.GetKey(KeyCode.S))
+            data.movementInput += Vector3.back;
+
+        if (Input.GetKey(KeyCode.A))
+            data.movementInput += Vector3.left;
+
+        if (Input.GetKey(KeyCode.D))
+            data.movementInput += Vector3.right;
+
+        data.buttons.Set(InputButtons.JUMP, Input.GetKey(KeyCode.Space));
+        data.buttons.Set(InputButtons.FIRE, Input.GetKey(KeyCode.Mouse0));
+
+        input.Set(data);
+    }
+
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) { }
     public void OnConnectedToServer(NetworkRunner runner) { }
