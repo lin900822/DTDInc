@@ -408,7 +408,7 @@ MonoBehaviour:
   _interpolationDataSource: 0
   networkCharacterController: {fileID: -8706795783170421534}
   playerCamera: {fileID: 5605755722282540394}
-  moveSpeed: 15
+  moveSpeed: 5
 --- !u!143 &5742366730586722207
 CharacterController:
   m_ObjectHideFlags: 0
@@ -457,7 +457,7 @@ MonoBehaviour:
   jumpImpulse: 8
   acceleration: 10
   braking: 10
-  maxSpeed: 2
+  maxSpeed: 5
   rotationSpeed: 15
   _IsGrounded: 0
   _Velocity: {x: 0, y: 0, z: 0}

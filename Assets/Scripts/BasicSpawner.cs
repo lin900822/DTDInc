@@ -17,6 +17,8 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
 
     [SerializeField] private NetworkObject playerPrefab = null;
 
+    [SerializeField] private float mouseSensitivity = 100f;
+
     private Dictionary<PlayerRef, NetworkObject> playerList = new Dictionary<PlayerRef, NetworkObject>();
 
     private void Start()
@@ -72,6 +74,8 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
 
         data.buttons.Set(InputButtons.JUMP, Input.GetKey(KeyCode.Space));
         //data.buttons.Set(InputButtons.FIRE, Input.GetKey(KeyCode.Mouse0));
+
+        data.Yaw += Input.GetAxis("Mouse X") * mouseSensitivity;
 
         input.Set(data);
     }

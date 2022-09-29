@@ -311,7 +311,7 @@ Transform:
   m_GameObject: {fileID: 1127873730}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 3.7, z: 9.6}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3.068, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -629,6 +629,7 @@ MonoBehaviour:
   networkRunner: {fileID: 1708666727}
   playerPrefab: {fileID: 6045421588405676126, guid: f05fa514b421f654eac6d1549e061c5c,
     type: 3}
+  mouseSensitivity: 30
 --- !u!114 &1708666727
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -13,4 +13,6 @@ public struct NetworkInputData : INetworkInput
 {
     public NetworkButtons buttons;
     public Vector3 movementInput;
+    //public Angle pitch;
+    public Angle Yaw;
 }
