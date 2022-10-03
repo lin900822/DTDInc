@@ -11,8 +11,8 @@ public enum InputButtons
 
 public struct NetworkInputData : INetworkInput
 {
-    public NetworkButtons buttons;
-    public Vector3 movementInput;
-    //public Angle pitch;
+    public NetworkButtons Buttons;
+    public Vector3 MovementInput;
+    public Angle Pitch;
     public Angle Yaw;
 }
