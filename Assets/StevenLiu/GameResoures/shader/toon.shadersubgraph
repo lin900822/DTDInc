@@ -1,5 +1,5 @@
 {
-    "m_SGVersion": 2,
+    "m_SGVersion": 3,
     "m_Type": "UnityEditor.ShaderGraph.GraphData",
     "m_ObjectId": "d8b873dd624544948265e8657b4899cf",
     "m_Properties": [
@@ -29,6 +29,12 @@
         }
     ],
     "m_Keywords": [],
+    "m_Dropdowns": [],
+    "m_CategoryData": [
+        {
+            "m_Id": "84b6242499ee4a78b58b0ceba3f8005a"
+        }
+    ],
     "m_Nodes": [
         {
             "m_Id": "93734d63c4d04bef9df0934e566cfeb2"
@@ -831,10 +837,11 @@
         "serializedMesh": {
             "m_SerializedMesh": "{\"mesh\":{\"instanceID\":0}}",
             "m_Guid": ""
-        }
+        },
+        "preventRotation": false
     },
     "m_Path": "Sub Graphs",
-    "m_ConcretePrecision": 0,
+    "m_GraphPrecision": 0,
     "m_PreviewMode": 2,
     "m_OutputNode": {
         "m_Id": "93734d63c4d04bef9df0934e566cfeb2"
@@ -1089,9 +1096,13 @@
         "m_GuidSerialized": "5f1b82dd-6c21-40f7-86a6-f8207738f3db"
     },
     "m_Name": "specularColor",
+    "m_DefaultRefNameVersion": 0,
+    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Vector4_08800ae5b73b4367a7a7887c9b07bb87",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
     "m_Precision": 0,
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
@@ -1910,7 +1921,8 @@
         "m_SerializableColors": []
     },
     "m_TextureType": 0,
-    "m_NormalMapSpace": 0
+    "m_NormalMapSpace": 0,
+    "m_EnableGlobalMipBias": true
 }
 
 {
@@ -2396,9 +2408,13 @@
         "m_GuidSerialized": "f4bb4ecc-8e8b-47bc-986f-1b171d8d2a7c"
     },
     "m_Name": "specularSize",
+    "m_DefaultRefNameVersion": 0,
+    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Vector1_45bb48f7bf0a481e856ec43d7bdd61c6",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
     "m_Precision": 0,
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
@@ -2634,9 +2650,13 @@
         "m_GuidSerialized": "2dfe5f7d-5f4b-4cf0-8f81-496db8c6760f"
     },
     "m_Name": "fresnelAngle",
+    "m_DefaultRefNameVersion": 0,
+    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Vector1_547aa2448d724623808108e6bf19b5e2",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
     "m_Precision": 0,
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
@@ -3130,9 +3150,13 @@
         "m_GuidSerialized": "23c8342c-625e-42d2-9be4-fd2fdce2a6fc"
     },
     "m_Name": "gradinetTex",
+    "m_DefaultRefNameVersion": 0,
+    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Texture2D_714306dd96bb477aadb21b9c00ab6d34",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
     "m_Precision": 0,
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
@@ -3141,6 +3165,8 @@
         "m_SerializedTexture": "{\"texture\":{\"instanceID\":0}}",
         "m_Guid": ""
     },
+    "isMainTexture": false,
+    "useTilingAndOffset": false,
     "m_Modifiable": true,
     "m_DefaultType": 0
 }
@@ -3342,6 +3368,39 @@
         "m_SerializableColors": []
     },
     "m_Space": 2
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.CategoryData",
+    "m_ObjectId": "84b6242499ee4a78b58b0ceba3f8005a",
+    "m_Name": "",
+    "m_ChildObjectList": [
+        {
+            "m_Id": "fe06ee52395740b28a026a9337411324"
+        },
+        {
+            "m_Id": "714306dd96bb477aadb21b9c00ab6d34"
+        },
+        {
+            "m_Id": "bd70ced34ff14cd18a64799335770389"
+        },
+        {
+            "m_Id": "c1d1f72dd82f4a2b8397ae2b36ec6c59"
+        },
+        {
+            "m_Id": "912b1b67b91e40d99c1f592fae221776"
+        },
+        {
+            "m_Id": "547aa2448d724623808108e6bf19b5e2"
+        },
+        {
+            "m_Id": "08800ae5b73b4367a7a7887c9b07bb87"
+        },
+        {
+            "m_Id": "45bb48f7bf0a481e856ec43d7bdd61c6"
+        }
+    ]
 }
 
 {
@@ -3633,9 +3692,13 @@
         "m_GuidSerialized": "cccd6453-083c-471f-8466-192c119e1717"
     },
     "m_Name": "fresnelColor",
+    "m_DefaultRefNameVersion": 0,
+    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Vector4_912b1b67b91e40d99c1f592fae221776",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
     "m_Precision": 0,
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
@@ -4512,9 +4575,13 @@
         "m_GuidSerialized": "f7b93817-5560-4a3c-96e3-59021c5206cd"
     },
     "m_Name": "light1Color",
+    "m_DefaultRefNameVersion": 0,
+    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Vector4_bd70ced34ff14cd18a64799335770389",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
     "m_Precision": 0,
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
@@ -4603,9 +4670,13 @@
         "m_GuidSerialized": "c965ffa6-4ef9-4569-bd90-acc44cb0aeb3"
     },
     "m_Name": "fresnelSize",
+    "m_DefaultRefNameVersion": 0,
+    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Vector1_c1d1f72dd82f4a2b8397ae2b36ec6c59",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
     "m_Precision": 0,
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
@@ -5435,9 +5506,13 @@
         "m_GuidSerialized": "f106249b-dbdc-4249-9de8-4a09160be507"
     },
     "m_Name": "light1Dir",
+    "m_DefaultRefNameVersion": 0,
+    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Vector3_fe06ee52395740b28a026a9337411324",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
     "m_Precision": 0,
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,

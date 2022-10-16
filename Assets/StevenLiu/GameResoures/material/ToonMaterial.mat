@@ -26,7 +26,7 @@ Material:
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
-  m_EnableInstancingVariants: 1
+  m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -96,10 +96,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - Vector1_1455fbde0a804fe8ba16d3fe620c53df: 100
+    - Vector1_1455fbde0a804fe8ba16d3fe620c53df: 140
     - Vector1_3f7fef033ebb492c83d5bc2078b4d1e0: 2.5
     - Vector1_6fcbdedfbc294516845d985017502d39: 0.2
-    - Vector1_baa820e09b0c4a37b362ecab75dea81e: 1
+    - Vector1_baa820e09b0c4a37b362ecab75dea81e: 0.5
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
@@ -129,7 +129,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - Color_3822c4739e67488ab1d589a588d6a009: {r: 1, g: 1, b: 1, a: 0}
-    - Color_a27884c9881d46299e71bb4e6647a132: {r: 1.5660378, g: 0.71505874, b: 1.0654622,
+    - Color_a27884c9881d46299e71bb4e6647a132: {r: 1.0592737, g: 0.48804232, b: 0.72097164,
         a: 0}
     - Color_a78d8d6bb8b84caeb9d9d940dce86a30: {r: 2.1185474, g: 1.7081482, b: 1.5306783,
         a: 0}
