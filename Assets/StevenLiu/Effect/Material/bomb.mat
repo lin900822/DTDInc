@@ -7,13 +7,13 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: distortion
-  m_Shader: {fileID: -6465566751694194690, guid: 5daca16e876c731449b208dab0241e85,
+  m_Name: bomb
+  m_Shader: {fileID: -6465566751694194690, guid: 7fd0262bae065d44a82ceafcf5353ee3,
     type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
-  m_EnableInstancingVariants: 1
+  m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -65,10 +65,6 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _maskTex:
-        m_Texture: {fileID: 2800000, guid: 829dd819a9721084c934238857004566, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -110,19 +106,16 @@ Material:
     - _Surface: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
-    - _distortionStrength: 0.5
-    - _noisePower: 7
-    - _noiseScale: 60
-    - _rotateSpeed: 10
-    - _strength: 0.6
-    - _twistStrength: 10
+    - _metallic: 1
+    - _range: 2.5
+    - _smoothness: 0.5
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 10.290196, g: 3.7019608, b: 1.8196079, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
---- !u!114 &5545589180078090149
+--- !u!114 &3746391832360178279
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
