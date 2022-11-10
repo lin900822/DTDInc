@@ -81,7 +81,7 @@ namespace Fusion.KCC
 		public EKCCFeatures ActiveFeatures => _activeFeatures;
 
 		/// <summary>
-		/// Controls whether update methods are driven by default Unity/Fusion methods or called manually using <c>ManualFixedUpdate()</c> and <c>ManualUpdate()</c>.
+		/// Controls whether update methods are driven by default Unity/Fusion methods or called manually using <c>ManualFixedUpdate()</c> and <c>ManualRenderUpdate()</c>.
 		/// </summary>
 		public bool HasManualUpdate => _hasManualUpdate;
 
@@ -101,7 +101,7 @@ namespace Fusion.KCC
 		public bool HasAnyAuthority => _hasInputAuthority == true || _hasStateAuthority == true;
 
 		/// <summary>
-		/// <c>True</c> if the <c>KCC</c> doesn't have input and state authority (compatible with any <c>Driver</c>).
+		/// <c>True</c> if the <c>KCC</c> doesn't have input or state authority (compatible with any <c>Driver</c>).
 		/// </summary>
 		public new bool IsProxy => _hasInputAuthority == false && _hasStateAuthority == false;
 
@@ -1359,7 +1359,7 @@ namespace Fusion.KCC
 		}
 
 		/// <summary>
-		/// Controls whether update methods are driven by default Unity/Fusion methods or called manually using <c>ManualFixedUpdate()</c> and <c>ManualUpdate()</c>.
+		/// Controls whether update methods are driven by default Unity/Fusion methods or called manually using <c>ManualFixedUpdate()</c> and <c>ManualRenderUpdate()</c>.
 		/// </summary>
 		public void SetManualUpdate(bool hasManualUpdate)
 		{
@@ -1511,8 +1511,9 @@ namespace Fusion.KCC
 
 		/// <summary>
 		/// Explicit interpolation on demand. Implicit interpolation in render update is not skipped.
+		/// <param name="alpha">Custom interpolation alpha. Valid range is 0.0 - 1.0, otherwise default value from <c>GetInterpolationData()</c> is used.</param>
 		/// </summary>
-		public void Interpolate()
+		public void Interpolate(float alpha = -1.0f)
 		{
 			if (_driver == EKCCDriver.None)
 				return;
@@ -1520,7 +1521,7 @@ namespace Fusion.KCC
 			KCCData data = Data;
 
 			Profiler.BeginSample("KCC.Interpolate");
-			InterpolateNetworkData();
+			InterpolateNetworkData(alpha);
 			CacheProcessors(data);
 			ProcessStage(EKCCStage.OnInterpolate, data, _onInterpolate);
 			SynchronizeTransform(data, true, true, IsInFixedUpdate == false && IsProxy == false);
@@ -2047,13 +2048,20 @@ namespace Fusion.KCC
 				float   deltaTimeDelta = pendingDeltaTime;
 				Vector3 positionDelta  = data.DesiredVelocity * pendingDeltaTime;
 
-				float positionDeltaMagnitude = positionDelta.magnitude;
-				if (positionDeltaMagnitude > maxDeltaMagnitude)
+				if (_activeFeatures.Has(EKCCFeature.CCD) == true)
 				{
-					float deltaRatio = optimalDeltaMagnitude / positionDeltaMagnitude;
+					float positionDeltaMagnitude = positionDelta.magnitude;
+					if (positionDeltaMagnitude > maxDeltaMagnitude)
+					{
+						float deltaRatio = optimalDeltaMagnitude / positionDeltaMagnitude;
 
-					positionDelta  *= deltaRatio;
-					deltaTimeDelta *= deltaRatio;
+						positionDelta  *= deltaRatio;
+						deltaTimeDelta *= deltaRatio;
+					}
+					else
+					{
+						hasFinished = true;
+					}
 				}
 				else
 				{

@@ -81,6 +81,7 @@ namespace Fusion.KCC
 		SnapToGround         = 2,
 		PredictionCorrection = 3,
 		AntiJitter           = 4,
+		CCD                  = 5,
 	}
 
 	[Flags]
@@ -91,6 +92,7 @@ namespace Fusion.KCC
 		SnapToGround         = 1 << EKCCFeature.SnapToGround,
 		PredictionCorrection = 1 << EKCCFeature.PredictionCorrection,
 		AntiJitter           = 1 << EKCCFeature.AntiJitter,
+		CCD                  = 1 << EKCCFeature.CCD,
 		All                  = -1
 	}
 

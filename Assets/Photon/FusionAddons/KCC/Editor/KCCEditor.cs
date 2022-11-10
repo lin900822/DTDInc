@@ -111,6 +111,7 @@ namespace Fusion.KCC.Editor
 
 			KCCData data = kccDebug.UseFixedData == true ? kcc.FixedData : kcc.RenderData;
 
+			EditorGUILayout.LabelField("Dynamic Word Count", kcc.DynamicWordCount.Value.ToString());
 			EditorGUILayout.LabelField("Driver", kcc.Driver.ToString());
 			EditorGUILayout.Toggle("Has Manual Update", kcc.HasManualUpdate);
 			EditorGUILayout.Toggle("Was Grounded", data.WasGrounded);

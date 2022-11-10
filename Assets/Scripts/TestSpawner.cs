@@ -1,23 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Fusion;
 using Fusion.Sockets;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
-/// <summary>
-/// 1. 建立連線的房間
-/// 2. 當有新玩家加入間後，生成一個玩家物件
-/// 3. 保存這些玩家物件
-/// </summary>
-public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
+public class TestSpawner : MonoBehaviour, INetworkRunnerCallbacks
 {
-    [SerializeField] private NetworkRunner networkRunner = null;
+    [SerializeField]  private NetworkRunner networkRunner = null;
 
-    [SerializeField] private NetworkObject playerPrefab = null;
-
-    [SerializeField] private float mouseSensitivity = 100f;
+    [SerializeField] private NetworkPrefabRef playerPrefab;
 
     private Dictionary<PlayerRef, NetworkObject> playerList = new Dictionary<PlayerRef, NetworkObject>();
 
@@ -33,7 +26,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         await networkRunner.StartGame(new StartGameArgs()
         {
             GameMode = mode,
-            SessionName = "New Room",
+            SessionName = "Fusion Room",
             Scene = SceneManager.GetActiveScene().buildIndex,
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
         });
@@ -41,7 +34,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
-        Vector3 spawnPosition = Vector3.one;
+        Vector3 spawnPosition = Vector3.up * 2;
         NetworkObject networkPlayerObject = runner.Spawn(playerPrefab, spawnPosition, Quaternion.identity, player);
 
         playerList.Add(player, networkPlayerObject);
@@ -56,31 +49,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         }
     }
 
-    public void OnInput(NetworkRunner runner, NetworkInput input)
-    {
-        var data = new NetworkInputData();
-
-        if (Input.GetKey(KeyCode.W))
-            data.MovementInput += Vector3.forward;
-
-        if (Input.GetKey(KeyCode.S))
-            data.MovementInput += Vector3.back;
-
-        if (Input.GetKey(KeyCode.A))
-            data.MovementInput += Vector3.left;
-
-        if (Input.GetKey(KeyCode.D))
-            data.MovementInput += Vector3.right;
-
-        data.Buttons.Set(InputButtons.JUMP, Input.GetKey(KeyCode.Space));
-        data.Buttons.Set(InputButtons.FIRE, Input.GetKey(KeyCode.Mouse0));
-
-        data.Yaw += Input.GetAxis("Mouse X") * mouseSensitivity;
-        data.Pitch += Input.GetAxis("Mouse Y") * mouseSensitivity;
-
-        input.Set(data);
-    }
-
+    public void OnInput(NetworkRunner runner, NetworkInput input) { }
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) { }
     public void OnConnectedToServer(NetworkRunner runner) { }
@@ -94,5 +63,4 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     public void OnSceneLoadDone(NetworkRunner runner) { }
     public void OnSceneLoadStart(NetworkRunner runner) { }
     public void OnHostMigration(NetworkRunner runner, HostMigrationToken hostMigrationToken) { }
-
 }

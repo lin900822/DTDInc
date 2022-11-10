@@ -1,6 +1,11 @@
 Photon Fusion KCC Addon - Release History
 
-Last tested with Fusion SDK 1.1.2 Build 545
+Last tested with Fusion SDK 1.1.4 Build 604
+
+Version 1.1.7
+- Added Dynamic Word Count to KCC inspector.
+- Added support for custom interpolation alpha in KCC.Interpolate() call.
+- Continuous Collision Detection (CCD) is now optional KCC Feature (EKCCFeature.CCD) and can be enabled/disabled from processors on demand.
 
 Version 1.1.6
 - Compatibility with Fusion SDK 1.1.2 Build 545
