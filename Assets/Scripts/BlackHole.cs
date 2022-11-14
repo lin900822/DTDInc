@@ -48,6 +48,8 @@ public class BlackHole : NetworkBehaviour
 
         foreach (var collider in hitColliders)
         {
+            if (collider == null) continue;
+
             if (collider.TryGetComponent<Cube>(out var cube))
             {
                 hitCubesIndex.Add(cube.Index);

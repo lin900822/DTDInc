@@ -39,7 +39,7 @@ public class SkillBox : NetworkBehaviour
                 int randomValue = Random.Range(0, abilities.Count);
                 string abilityName = abilities[randomValue];
 
-                if (playerController.AbilityHandler.AddAbility(abilityName))
+                if (playerController.AbilityHandler.AddAbilityToSlots(abilityName))
                 {
                     IsActive = false;
                     timer = TickTimer.CreateFromSeconds(Runner, coolDownTime);

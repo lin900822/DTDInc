@@ -68,7 +68,7 @@ public class PlayerAgent : Agent
 
 	protected override void OnLateFixedUpdate() 
 	{
-		playerController.AbilityHandler.OnFixedUpdate();
+		
 	}
 
 	protected override void ProcessRenderInput()

@@ -5,6 +5,7 @@ using Fusion;
 public class Ability : NetworkBehaviour
 {
     public string AbilityName = "";
+    public Sprite AbilityIcon = null;
     public string Description = "";
     public bool CanAim;
 

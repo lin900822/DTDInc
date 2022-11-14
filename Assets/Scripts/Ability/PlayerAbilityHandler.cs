@@ -6,24 +6,25 @@ using System;
 
 public class PlayerAbilityHandler : NetworkBehaviour
 {
+    // Events
+
     public event Action<int> OnSelectedAbilityIndexUpdate = null;
-    public event Action<AbilityDisplayStatus[]> OnAbilityStatusUpdate = null;
+    public event Action<AbilitySlotUIInfo[]> OnAbilityStatusUpdate = null;
+
+    // Components
 
     [SerializeField] private PlayerController playerController = null;
 
-    [SerializeField] private AbilityHolder abilityHolder = null;
+    [SerializeField] private PlayerAbilityDatabase abilityDatabase = null;
 
-    [SerializeField] private List<Ability> abilities = new List<Ability>();
+    [SerializeField] private AbilityHolder abilityHolder = null;
 
     // Network Properties
 
-    [Networked(OnChanged = nameof(OnAbilitySlotListChanged))]
-    [Capacity(4)] 
-    [UnitySerializeField] 
+    [Networked(OnChanged = nameof(OnAbilitySlotListChanged))] [Capacity(4)] [UnitySerializeField] 
     private NetworkLinkedList<AbilitySlot> abilitySlotsList { get; }
 
-    [UnitySerializeField]
-    [Networked] public int SelectedAbilityIndex { get; set; }
+    [Networked] private int selectedAbilityIndex { get; set; }
 
     [Networked] private float mouseScrollValue { get; set; }
 
@@ -40,73 +41,36 @@ public class PlayerAbilityHandler : NetworkBehaviour
         }
     }
 
+    public override void Despawned(NetworkRunner runner, bool hasState)
+    {
+        OnAbilityStatusUpdate -= playerController.UIHandler.UpdateAbilityStatus;
+        OnSelectedAbilityIndexUpdate -= playerController.UIHandler.UpdateSelectedSlot;
+    }
+
     public void ProcessInput()
     {
         ProcessUseAbility();
 
-        ProcessSelectedIndex();
+        UpdateSelectedIndex();
     }
 
     private void ProcessUseAbility()
     {
         if (playerController.Input.WasPressed(InputButtons.UseAbility))
         {
-            if (SelectedAbilityIndex < 0 && SelectedAbilityIndex >= 3) return;
-            if (abilityHolder.IsBusy) return;
-
-            if (abilitySlotsList[SelectedAbilityIndex].Amount <= 0) return;
-
-            Ability abilityToUse = GetAbilityToUse();
-
-            abilityHolder.Activate(playerController, abilityToUse);
-
-            var slot = abilitySlotsList[SelectedAbilityIndex];
-            slot.Amount--;
-
-            if (slot.Amount <= 0)
-                slot.AbilityName = null;
-
-            abilitySlotsList.Set(SelectedAbilityIndex, slot);
+            UseAbility();
         }
     }
 
-    private Ability GetAbilityToUse()
-    {
-        string selectedAbilityName = abilitySlotsList[SelectedAbilityIndex].AbilityName.ToString();
+    // Public Methods
 
-        Ability abilityToUse = null;
-        foreach (var ability in abilities)
-        {
-            if (ability.AbilityName == selectedAbilityName)
-            {
-                abilityToUse = ability;
-            }
-        }
-
-        return abilityToUse;
-    }
-
-    private void ProcessSelectedIndex()
-    {
-        mouseScrollValue += playerController.Input.FixedInput.MouseWheelDelta;
-        mouseScrollValue = Mathf.Clamp(mouseScrollValue, 0, 100);
-        SelectedAbilityIndex = Mathf.Clamp((int)(mouseScrollValue / 33), 0, 2);
-
-        OnSelectedAbilityIndexUpdate?.Invoke(SelectedAbilityIndex);
-    }
-
-    public void OnFixedUpdate()
-    {
-
-    }
-
-    public bool AddAbility(string abilityName)
+    public bool AddAbilityToSlots(string abilityName)
     {
         int i = 0;
 
-        foreach(var abilitySlot in abilitySlotsList)
+        foreach (var abilitySlot in abilitySlotsList)
         {
-            if(abilitySlot.AbilityName == abilityName)
+            if (abilitySlot.AbilityName == abilityName)
             {
                 var slot = abilitySlot;
                 slot.Amount++;
@@ -114,7 +78,7 @@ public class PlayerAbilityHandler : NetworkBehaviour
 
                 return true;
             }
-            else if(string.IsNullOrEmpty(abilitySlot.AbilityName.ToString()))
+            else if (string.IsNullOrEmpty(abilitySlot.AbilityName.ToString()))
             {
                 var slot = abilitySlot;
                 slot.AbilityName = abilityName;
@@ -130,16 +94,77 @@ public class PlayerAbilityHandler : NetworkBehaviour
         return false;
     }
 
+    // Private Methods
+
+    private void UseAbility()
+    {
+        if (abilityHolder.IsBusy) return;
+        if (selectedAbilityIndex < 0 && selectedAbilityIndex >= 3) return;
+        if (abilitySlotsList[selectedAbilityIndex].Amount <= 0) return;
+
+        ActiveSelectedAbility();
+
+        ConsumeOneAbility();
+    }
+
+    private void ActiveSelectedAbility()
+    {
+        string selectedAbilityName = abilitySlotsList[selectedAbilityIndex].AbilityName.ToString();
+        Ability abilityToUse = abilityDatabase.GetAbilityByName(selectedAbilityName);
+        abilityHolder.Activate(playerController, abilityToUse);
+    }
+
+    private void ConsumeOneAbility()
+    {
+        var slot = abilitySlotsList[selectedAbilityIndex];
+        slot.Amount--;
+
+        if (slot.Amount <= 0)
+        {
+            slot.AbilityName = null;
+        }
+
+        abilitySlotsList.Set(selectedAbilityIndex, slot);
+    }
+
+    private void UpdateSelectedIndex()
+    {
+        mouseScrollValue += playerController.Input.FixedInput.MouseWheelDelta;
+        mouseScrollValue = Mathf.Clamp(mouseScrollValue, 0, 100);
+        selectedAbilityIndex = Mathf.Clamp((int)(mouseScrollValue / 33), 0, 2);
+
+        OnSelectedAbilityIndexUpdate?.Invoke(selectedAbilityIndex);
+    }
+
+    // OnChanged Methods
+
+    private static void OnAbilitySlotListChanged(Changed<PlayerAbilityHandler> changed)
+    {
+        changed.Behaviour.UpdateSlotsUI();
+    }
+
     private void UpdateSlotsUI()
     {
-        AbilityDisplayStatus[] abilityDisplayStatuses = new AbilityDisplayStatus[3];
+        AbilitySlotUIInfo[] abilityDisplayStatuses = new AbilitySlotUIInfo[3];
 
         int i = 0;
 
         foreach (var abilistySlot in abilitySlotsList)
         {
-            abilityDisplayStatuses[i].Name = abilistySlot.AbilityName.ToString();
-            abilityDisplayStatuses[i].Amount = abilistySlot.Amount;
+            var ability = abilityDatabase.GetAbilityByName(abilistySlot.AbilityName.ToString());
+
+            if(ability != null)
+            {
+                abilityDisplayStatuses[i].Name = ability.AbilityName;
+                abilityDisplayStatuses[i].Amount = abilistySlot.Amount;
+                abilityDisplayStatuses[i].Icon = ability.AbilityIcon;
+            }
+            else
+            {
+                abilityDisplayStatuses[i].Name = "";
+                abilityDisplayStatuses[i].Amount = 0;
+                abilityDisplayStatuses[i].Icon = default;
+            }
 
             i++;
         }
@@ -147,11 +172,7 @@ public class PlayerAbilityHandler : NetworkBehaviour
         OnAbilityStatusUpdate?.Invoke(abilityDisplayStatuses);
     }
 
-    private static void OnAbilitySlotListChanged(Changed<PlayerAbilityHandler> changed)
-    {
-        changed.Behaviour.UpdateSlotsUI();
-    }
-
+    
 }
 
 [Serializable]

@@ -15,29 +15,30 @@ public class PlayerUIHandler : MonoBehaviour
         {
             if (i == selectedIndex)
             {
-                abilityImgs[i].color = new Color(.3f, .3f, .3f);
+                abilityImgs[i].color = new Color(.75f, .75f, .75f);
             }
             else
             {
-                abilityImgs[i].color = Color.black;
+                abilityImgs[i].color = Color.white;
             }
         }
     }
 
-    public void UpdateAbilityStatus(AbilityDisplayStatus[] abilities)
+    public void UpdateAbilityStatus(AbilitySlotUIInfo[] abilities)
     {
         for (int i = 0; i < abilityAmountTxt.Length; i++)
         {
             abilityAmountTxt[i].text = abilities[i].Amount.ToString();
+            abilityImgs[i].sprite = abilities[i].Icon;
         }
     }
 }
 
-public struct AbilityDisplayStatus
+public struct AbilitySlotUIInfo
 {
     public string Name;
     public string Desciption;
-    public Texture2D Icon;
+    public Sprite Icon;
 
     public int Amount;
 }

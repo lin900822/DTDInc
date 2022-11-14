@@ -17,6 +17,8 @@ public class PlayerAttackHandler : NetworkBehaviour
 
     private void DestroyCube()
     {
+        if (!Object.HasStateAuthority) return;
+
         if(Physics.Raycast(playerController.PlayerCamera.transform.position, 
             playerController.PlayerCamera.transform.TransformDirection(Vector3.forward),
             out RaycastHit hit,
