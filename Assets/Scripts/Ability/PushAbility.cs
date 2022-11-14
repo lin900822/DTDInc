@@ -11,7 +11,7 @@ public class PushAbility : Ability
 
     [SerializeField] private GameObject effect = null;
 
-    [SerializeField] private PushKCCProcessor pushKCCProcessor = null;
+    [SerializeField] private LayerMask hitLayer = default;
 
     private List<LagCompensatedHit> hits = new List<LagCompensatedHit>();
 
@@ -27,19 +27,7 @@ public class PushAbility : Ability
         {
             if (hit.GameObject.TryGetComponent<PlayerController>(out var hitPlayer))
             {
-                pushKCCProcessor.SetCenterPoint(playerController.transform.position, impulseMagnitude);
-                hitPlayer.KCC.AddModifier(pushKCCProcessor);
-            }
-        }
-    }
-
-    public override void OnCleanUp()
-    {
-        foreach (var hit in hits)
-        {
-            if (hit.GameObject.TryGetComponent<PlayerController>(out var hitPlayer))
-            {
-                hitPlayer.KCC.RemoveModifier(pushKCCProcessor);
+                hitPlayer.KCC.AddExternalImpulse(playerController.transform.rotation * Vector3.forward * impulseMagnitude);
             }
         }
     }
@@ -48,7 +36,7 @@ public class PushAbility : Ability
     {
         hits.Clear();
 
-        Runner.LagCompensation.OverlapSphere(playerController.transform.position, range, Object.InputAuthority, hits, -1, HitOptions.IgnoreInputAuthority);
+        Runner.LagCompensation.OverlapSphere(playerController.transform.position, range, Object.InputAuthority, hits, hitLayer, HitOptions.IgnoreInputAuthority);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
