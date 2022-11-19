@@ -52,4 +52,12 @@ public class PlayerController : NetworkBehaviour
     {
         
     }
+
+    public override void FixedUpdateNetwork()
+    {
+        if(transform.position.y <= -20f)
+        {
+            KCC.SetPosition(new Vector3(0, 5, 0));
+        }
+    }
 }
