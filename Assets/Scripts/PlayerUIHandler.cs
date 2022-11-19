@@ -6,7 +6,8 @@ using TMPro;
 
 public class PlayerUIHandler : MonoBehaviour
 {
-    [SerializeField] private Image[] abilityImgs = null;
+    [SerializeField] private Image[] abilitySlotImgs = null;
+    [SerializeField] private Image[] abilityIconImgs = null;
     [SerializeField] private TMP_Text[] abilityAmountTxt = null;
 
     [SerializeField] private Image crosshairImg = null;
@@ -15,15 +16,15 @@ public class PlayerUIHandler : MonoBehaviour
 
     public void UpdateSelectedSlot(int selectedIndex)
     {
-        for (int i = 0; i < abilityImgs.Length; i++)
+        for (int i = 0; i < abilityIconImgs.Length; i++)
         {
             if (i == selectedIndex)
             {
-                abilityImgs[i].color = new Color(.75f, .75f, .75f);
+                abilitySlotImgs[i].color = new Color(.75f, .75f, .75f);
             }
             else
             {
-                abilityImgs[i].color = Color.white;
+                abilitySlotImgs[i].color = new Color(.5f, .5f, .5f, .5f);
             }
         }
     }
@@ -33,20 +34,20 @@ public class PlayerUIHandler : MonoBehaviour
         for (int i = 0; i < abilityAmountTxt.Length; i++)
         {
             abilityAmountTxt[i].text = abilities[i].Amount.ToString();
-            abilityImgs[i].sprite = abilities[i].Icon;
+            abilityIconImgs[i].sprite = abilities[i].Icon;
 
             if(abilities[i].Amount > 0)
             {
-                abilityImgs[i].color = new Color(1, 1, 1, 1);
+                abilityIconImgs[i].gameObject.SetActive(true);
             }
             else
             {
-                abilityImgs[i].color = new Color(1, 1, 1, 0);
+                abilityIconImgs[i].gameObject.SetActive(false);
             }
         }
     }
 
-    public void SetCrosshair(bool canAim)
+    public void SetAimCrosshair(bool canAim)
     {
         if(canAim)
         {

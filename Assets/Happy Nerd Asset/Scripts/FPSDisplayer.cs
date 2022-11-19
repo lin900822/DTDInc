@@ -1,33 +1,37 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-
-[RequireComponent(typeof(Text))]
-public class FPSDisplayer : MonoBehaviour
+namespace HappyNerd
 {
-    [SerializeField]
-    private Text fpsText = null;
+    using System.Collections;
+    using System.Collections.Generic;
+    using UnityEngine;
+    using UnityEngine.UI;
 
-    [SerializeField]
-    private float updateFrequency = .3f;
-
-    float fps = 0f;
-
-    private void Start()
+    [RequireComponent(typeof(Text))]
+    public class FPSDisplayer : MonoBehaviour
     {
-        fpsText = GetComponent<Text>();
+        [SerializeField]
+        private Text fpsText = null;
 
-        InvokeRepeating(nameof(DisplayFPS), 0f, updateFrequency);
+        [SerializeField]
+        private float updateFrequency = .3f;
+
+        float fps = 0f;
+
+        private void Start()
+        {
+            fpsText = GetComponent<Text>();
+
+            InvokeRepeating(nameof(DisplayFPS), 0f, updateFrequency);
+        }
+
+        private void Update()
+        {
+            fps = (1f / Time.deltaTime);
+        }
+
+        private void DisplayFPS()
+        {
+            fpsText.text = fps.ToString("0") + " FPS";
+        }
     }
 
-    private void Update()
-    {
-        fps = (1f / Time.deltaTime);
-    }
-
-    private void DisplayFPS()
-    {
-        fpsText.text = fps.ToString("0") + " FPS";
-    }
 }

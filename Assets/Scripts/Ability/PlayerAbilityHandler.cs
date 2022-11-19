@@ -195,14 +195,14 @@ public class PlayerAbilityHandler : NetworkBehaviour
 
         if (abilitySelected == null)
         {
-            playerController.UIHandler.SetCrosshair(false);
+            playerController.UIHandler.SetAimCrosshair(false);
 
             return;
         }
 
         bool canAim = abilitySelected.CanAim;
 
-        playerController.UIHandler.SetCrosshair(canAim);
+        playerController.UIHandler.SetAimCrosshair(canAim);
     }
 }
 

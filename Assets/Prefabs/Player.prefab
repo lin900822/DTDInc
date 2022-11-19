@@ -473,7 +473,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 084196a2072c56848902660eced7b2b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  abilityImgs:
+  abilitySlotImgs:
+  - {fileID: 326617849642620242}
+  - {fileID: 3549345708456670869}
+  - {fileID: 6922445518151370192}
+  abilityIconImgs:
   - {fileID: 2130026051620524330}
   - {fileID: 5559779927311881046}
   - {fileID: 7842318135987146291}
