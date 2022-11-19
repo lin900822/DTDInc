@@ -9,6 +9,10 @@ public class PlayerUIHandler : MonoBehaviour
     [SerializeField] private Image[] abilityImgs = null;
     [SerializeField] private TMP_Text[] abilityAmountTxt = null;
 
+    [SerializeField] private Image crosshairImg = null;
+
+    [SerializeField] private Sprite[] crosshairSprites = null;
+
     public void UpdateSelectedSlot(int selectedIndex)
     {
         for (int i = 0; i < abilityImgs.Length; i++)
@@ -30,6 +34,27 @@ public class PlayerUIHandler : MonoBehaviour
         {
             abilityAmountTxt[i].text = abilities[i].Amount.ToString();
             abilityImgs[i].sprite = abilities[i].Icon;
+
+            if(abilities[i].Amount > 0)
+            {
+                abilityImgs[i].color = new Color(1, 1, 1, 1);
+            }
+            else
+            {
+                abilityImgs[i].color = new Color(1, 1, 1, 0);
+            }
+        }
+    }
+
+    public void SetCrosshair(bool canAim)
+    {
+        if(canAim)
+        {
+            crosshairImg.sprite = crosshairSprites[1]; 
+        }
+        else
+        {
+            crosshairImg.sprite = crosshairSprites[0];
         }
     }
 }

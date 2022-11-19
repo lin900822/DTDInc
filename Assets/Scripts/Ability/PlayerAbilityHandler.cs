@@ -24,7 +24,8 @@ public class PlayerAbilityHandler : NetworkBehaviour
     [Networked(OnChanged = nameof(OnAbilitySlotListChanged))] [Capacity(4)] [UnitySerializeField] 
     private NetworkLinkedList<AbilitySlot> abilitySlotsList { get; }
 
-    [Networked] private int selectedAbilityIndex { get; set; }
+    [Networked(OnChanged = nameof(OnSelectedAbilityIndexChanged))]
+    private int selectedAbilityIndex { get; set; } = -1;
 
     [Networked] private float mouseScrollValue { get; set; }
 
@@ -32,6 +33,8 @@ public class PlayerAbilityHandler : NetworkBehaviour
 
     public override void Spawned()
     {
+        selectedAbilityIndex = 0;
+
         if (Object.HasInputAuthority)
         {
             OnAbilityStatusUpdate += playerController.UIHandler.UpdateAbilityStatus;
@@ -78,7 +81,15 @@ public class PlayerAbilityHandler : NetworkBehaviour
 
                 return true;
             }
-            else if (string.IsNullOrEmpty(abilitySlot.AbilityName.ToString()))
+
+            i++;
+        }
+
+        i = 0;
+
+        foreach (var abilitySlot in abilitySlotsList)
+        {
+            if (string.IsNullOrEmpty(abilitySlot.AbilityName.ToString()))
             {
                 var slot = abilitySlot;
                 slot.AbilityName = abilityName;
@@ -110,8 +121,8 @@ public class PlayerAbilityHandler : NetworkBehaviour
     private void ActiveSelectedAbility()
     {
         string selectedAbilityName = abilitySlotsList[selectedAbilityIndex].AbilityName.ToString();
-        Ability abilityToUse = abilityDatabase.GetAbilityByName(selectedAbilityName);
-        abilityHolder.Activate(playerController, abilityToUse);
+        Ability abilitySelected = abilityDatabase.GetAbilityByName(selectedAbilityName);
+        abilityHolder.Activate(playerController, abilitySelected);
     }
 
     private void ConsumeOneAbility()
@@ -172,7 +183,27 @@ public class PlayerAbilityHandler : NetworkBehaviour
         OnAbilityStatusUpdate?.Invoke(abilityDisplayStatuses);
     }
 
-    
+    private static void OnSelectedAbilityIndexChanged(Changed<PlayerAbilityHandler> changed)
+    {
+        changed.Behaviour.UpdateCrosshair(changed.Behaviour.selectedAbilityIndex);
+    }
+
+    private void UpdateCrosshair(int index)
+    {
+        string selectedAbilityName = abilitySlotsList[selectedAbilityIndex].AbilityName.ToString();
+        Ability abilitySelected = abilityDatabase.GetAbilityByName(selectedAbilityName);
+
+        if (abilitySelected == null)
+        {
+            playerController.UIHandler.SetCrosshair(false);
+
+            return;
+        }
+
+        bool canAim = abilitySelected.CanAim;
+
+        playerController.UIHandler.SetCrosshair(canAim);
+    }
 }
 
 [Serializable]
