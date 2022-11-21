@@ -57,7 +57,7 @@ public class PlayerController : NetworkBehaviour
     {
         if(transform.position.y <= -20f)
         {
-            KCC.SetPosition(new Vector3(0, 5, 0));
+            KCC.SetPosition(SpawnPointManager.Instance.GetRandomSpawnPoint(Runner.Simulation.Tick).position);
         }
     }
 }

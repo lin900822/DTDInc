@@ -27,7 +27,9 @@ public class PushAbility : Ability
         {
             if (hit.GameObject.TryGetComponent<PlayerController>(out var hitPlayer))
             {
-                hitPlayer.KCC.AddExternalImpulse(playerController.transform.rotation * Vector3.forward * impulseMagnitude);
+                var pushDirection = (hitPlayer.transform.position - playerController.transform.position).normalized;
+
+                hitPlayer.KCC.AddExternalVelocity(pushDirection * impulseMagnitude);
             }
         }
     }

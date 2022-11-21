@@ -27,7 +27,9 @@ public class PullAbility : Ability
         {
             if (hit.GameObject.TryGetComponent<PlayerController>(out var hitPlayer))
             {
-                hitPlayer.KCC.AddExternalImpulse(playerController.transform.rotation * -Vector3.forward * impulseMagnitude);
+                var pullDirection = (playerController.transform.position - hitPlayer.transform.position).normalized;
+
+                hitPlayer.KCC.AddExternalVelocity(pullDirection * impulseMagnitude);
             }
         }
     }
