@@ -19,7 +19,7 @@ public class PlayerAttackHandler : NetworkBehaviour
     {
         if (!Object.HasStateAuthority) return;
 
-        if(Physics.Raycast(playerController.PlayerCamera.transform.position, 
+        if(Runner.GetPhysicsScene().Raycast(playerController.PlayerCamera.transform.position, 
             playerController.PlayerCamera.transform.TransformDirection(Vector3.forward),
             out RaycastHit hit,
             Mathf.Infinity,

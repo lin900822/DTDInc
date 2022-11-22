@@ -29,7 +29,9 @@ public class PullAbility : Ability
             {
                 var pullDirection = (playerController.transform.position - hitPlayer.transform.position).normalized;
 
-                hitPlayer.KCC.AddExternalVelocity(pullDirection * impulseMagnitude);
+                pullDirection.y += .1f;
+
+                hitPlayer.KCC.AddExternalImpulse(pullDirection * impulseMagnitude);
             }
         }
     }

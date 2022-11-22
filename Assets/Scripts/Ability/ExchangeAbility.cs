@@ -21,15 +21,14 @@ public class ExchangeAbility : Ability
             hitPlayer.KCC.SetPosition(currentPosition);
 
             if (Object.HasInputAuthority)
-                PlayEffect_RPC(currentPosition, aimmedTrans.position);
+                PlayEffect_RPC(currentPosition);
         }
     }
 
     [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
-    private void PlayEffect_RPC(Vector3 pos1, Vector3 pos2)
+    private void PlayEffect_RPC(Vector3 pos)
     {
-        Instantiate(effect, pos1 + Vector3.up * 1.5f, Quaternion.identity);
-        Instantiate(effect, pos2 + Vector3.up * 1.5f, Quaternion.identity);
+        Instantiate(effect, pos + Vector3.up * 1.5f, Quaternion.identity);
     }
 }
  

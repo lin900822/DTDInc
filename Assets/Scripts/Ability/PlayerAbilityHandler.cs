@@ -152,6 +152,7 @@ public class PlayerAbilityHandler : NetworkBehaviour
     private static void OnAbilitySlotListChanged(Changed<PlayerAbilityHandler> changed)
     {
         changed.Behaviour.UpdateSlotsUI();
+        changed.Behaviour.UpdateCrosshair(changed.Behaviour.selectedAbilityIndex);
     }
 
     private void UpdateSlotsUI()

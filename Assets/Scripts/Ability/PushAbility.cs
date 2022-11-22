@@ -29,7 +29,9 @@ public class PushAbility : Ability
             {
                 var pushDirection = (hitPlayer.transform.position - playerController.transform.position).normalized;
 
-                hitPlayer.KCC.AddExternalVelocity(pushDirection * impulseMagnitude);
+                pushDirection.y += .1f;
+
+                hitPlayer.KCC.AddExternalImpulse(pushDirection * impulseMagnitude);
             }
         }
     }
