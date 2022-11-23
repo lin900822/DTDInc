@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class JoinRoomPanel : Panel
+public class CreateRoomPanel : Panel
 {
     public void OnBackBtnClicked()
     {
@@ -12,8 +11,6 @@ public class JoinRoomPanel : Panel
 
     public void OnConfirmBtnClicked()
     {
-        
+
     }
-
-
 }

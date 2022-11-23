@@ -12,7 +12,7 @@ public class MatchPanel : Panel
 
     public void OnCreateRoomBtnClicked()
     {
-
+        menuManager.SwitchPanel(2);
     }
 
     public void Exit()
