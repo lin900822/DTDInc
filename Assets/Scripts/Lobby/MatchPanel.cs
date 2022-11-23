@@ -5,11 +5,9 @@ using UnityEngine.UI;
 
 public class MatchPanel : Panel
 {
-    [SerializeField] private MenuManager menuManager = null;
-
     public void OnJoinRoomBtnClicked()
     {
-
+        menuManager.SwitchPanel(1);
     }
 
     public void OnCreateRoomBtnClicked()
