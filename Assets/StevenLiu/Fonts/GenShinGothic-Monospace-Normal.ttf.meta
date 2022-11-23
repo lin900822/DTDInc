@@ -1,0 +1,24 @@
+fileFormatVersion: 2
+guid: 0a51648c907bf1944ab4c6764ce60223
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Gen Shin Gothic Monospace
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 37fcb2009e5edfc42a5a8af0882ad591, type: 3}
+  - {fileID: 12800000, guid: b238e68eab8c7a546b8cda48634ddeeb, type: 3}
+  - {fileID: 12800000, guid: 636ac4173a93a4146be0b34ddb89d6af, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
