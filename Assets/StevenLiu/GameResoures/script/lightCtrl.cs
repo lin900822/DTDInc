@@ -4,17 +4,12 @@ using UnityEngine;
 
 public class lightCtrl : MonoBehaviour
 {
-    private Light light;
-    // Start is called before the first frame update
-    void Start()
-    {
-        light = GetComponent<Light>();
-    }
+    public Color lightColor;
 
     // Update is called once per frame
     void Update()
     {
         Shader.SetGlobalVector("_light1Dir", -transform.forward);
-        Shader.SetGlobalColor("_light1Color", light.color);
+        Shader.SetGlobalColor("_light1Color", lightColor);
     }
 }
