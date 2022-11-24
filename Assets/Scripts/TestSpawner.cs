@@ -19,7 +19,7 @@ public class TestSpawner : MonoBehaviour, INetworkRunnerCallbacks
         StartGame(GameMode.AutoHostOrClient);
     }
 
-    async void StartGame(GameMode mode)
+    private async void StartGame(GameMode mode)
     {
         networkRunner.ProvideInput = true;
 
