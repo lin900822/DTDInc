@@ -1,37 +1,37 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class MenuManager : MonoBehaviour
+namespace Lobby
 {
-    [SerializeField] private Panel[] panels = null;
-
-    private void Start()
+    public class MenuManager : MonoBehaviour
     {
-        SwitchPanel(0);
-    }
+        [SerializeField] private Panel[] panels = null;
 
-    public void SwitchPanel(int panelIndex)
-    {
-        for (int i = 0; i < panels.Length; i++)
+        private void Start()
         {
-            if (panelIndex == i)
+            SwitchPanel(0);
+        }
+
+        public void SwitchPanel(int panelIndex)
+        {
+            for (int i = 0; i < panels.Length; i++)
             {
-                panels[i].SetActive(true);
+                if (panelIndex == i)
+                {
+                    panels[i].SetActive(true);
+                }
+                else
+                {
+                    panels[i].SetActive(false);
+                }
             }
-            else
+        }
+
+        public void StartLoading()
+        {
+            for (int i = 0; i < panels.Length; i++)
             {
                 panels[i].SetActive(false);
             }
-        }
-    }
-
-    public void StartLoading()
-    {
-        for (int i = 0; i < panels.Length; i++)
-        {
-            panels[i].SetActive(false);
         }
     }
 }

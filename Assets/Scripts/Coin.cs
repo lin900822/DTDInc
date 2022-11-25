@@ -9,43 +9,30 @@ public class Coin : NetworkBehaviour
 
     [SerializeField] private LayerMask hitLayers = default;
 
-    private PlayerController playerController = null;
+    private PlayerController _playerController = null;
 
-    private List<LagCompensatedHit> hits = new List<LagCompensatedHit>();
+    private readonly List<LagCompensatedHit> _hits = new List<LagCompensatedHit>();
 
-    [Networked] private NetworkBehaviourId ownerId { get; set; }
+    [Networked] private NetworkBehaviourId OwnerId { get; set; }
 
     public override void FixedUpdateNetwork()
     {
-        if (Runner.TryFindBehaviour(ownerId, out PlayerController obj))
-        {
-            playerController = obj;
-        }
-        else
-        {
-            playerController = null;
-        }
+        _playerController = Runner.TryFindBehaviour(OwnerId, out PlayerController obj) ? obj : null;
 
-        if (playerController != null)
-        {
-            transform.position = playerController.transform.position + new Vector3(0, 2f, 0);
-        }
+        FollowPlayer();
 
-        if (transform.position.y < 0)
-        {
-            ownerId = NetworkBehaviourId.None;
-
-            transform.position = new Vector3(0, 2, 0);
-        }
+        DetectIfIsOutOfBound();
 
         DetectPlayer();
     }
 
-    public override void Render()
+    private void DetectIfIsOutOfBound()
     {
-        if(playerController != null)
+        if (transform.position.y < 0)
         {
-            transform.position = playerController.transform.position + new Vector3(0, 2f, 0);
+            OwnerId = NetworkBehaviourId.None;
+
+            transform.position = new Vector3(0, 2, 0);
         }
     }
 
@@ -53,16 +40,29 @@ public class Coin : NetworkBehaviour
     {
         if (!Object.HasStateAuthority) return;
 
-        hits.Clear();
+        _hits.Clear();
 
-        Runner.LagCompensation.OverlapSphere(transform.position, radius, Object.InputAuthority, hits, hitLayers, HitOptions.None);
+        Runner.LagCompensation.OverlapSphere(transform.position, radius, Object.InputAuthority, _hits, hitLayers, HitOptions.None);
 
-        if (hits.Count > 0)
+        if (_hits.Count > 0)
         {
-            if (hits[0].GameObject.TryGetComponent<PlayerController>(out var playerController))
+            if (_hits[0].GameObject.TryGetComponent<PlayerController>(out var obj))
             {
-                ownerId = playerController.Id;
+                OwnerId = obj.Id;
             }
+        }
+    }
+        
+    public override void Render()
+    {
+        FollowPlayer();
+    }
+
+    private void FollowPlayer()
+    {
+        if (_playerController != null)
+        {
+            transform.position = _playerController.transform.position + new Vector3(0, 2f, 0);
         }
     }
 }

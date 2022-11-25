@@ -1,29 +1,29 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
 
-public class JoinRoomPanel : Panel
+namespace Lobby
 {
-    [SerializeField] private TMP_InputField roomNameInputField = null;
-
-    public void OnBackBtnClicked()
+    public class JoinRoomPanel : Panel
     {
-        menuManager.SwitchPanel(0);
-    }
+        [SerializeField] private TMP_InputField roomNameInputField = null;
 
-    public async void OnConfirmBtnClicked()
-    {
-        menuManager.StartLoading();
-
-        string roomName = roomNameInputField.text;
-
-        var result = await GameApp.Instance.JoinRoom(roomName);
-
-        if (result.Ok)
+        public void OnBackBtnClicked()
         {
-            menuManager.SwitchPanel(1);
+            menuManager.SwitchPanel(0);
+        }
+
+        public async void OnConfirmBtnClicked()
+        {
+            menuManager.StartLoading();
+
+            var roomName = roomNameInputField.text;
+
+            var result = await GameApp.Instance.JoinRoom(roomName);
+
+            if (result.Ok)
+            {
+                menuManager.SwitchPanel(1);
+            }
         }
     }
 }

@@ -1,43 +1,46 @@
-﻿using UnityEngine;
-using Fusion.KCC;
+﻿using Fusion.KCC;
+using UnityEngine;
 
-/// <summary>
-/// Example processor - applying dynamic force every frame to all KCCs interacting with the processor.
-/// Interaction can be provided manually (via KCC.AddModifier() call) or collision-based
-/// </summary>
-public sealed class DynamicForceKCCProcessor : KCCProcessor
+namespace KCC_Processor
 {
-	// PRIVATE MEMBERS
-
-	[SerializeField]
-	private Vector3 _force;
-	[SerializeField]
-	private float _maxDistance;
-
-	// KCCProcessor INTERFACE
-
-	public override EKCCStages GetValidStages(KCC kcc, KCCData data)
+	/// <summary>
+	/// Example processor - applying dynamic force every frame to all KCCs interacting with the processor.
+	/// Interaction can be provided manually (via KCC.AddModifier() call) or collision-based
+	/// </summary>
+	public sealed class DynamicForceKCCProcessor : KCCProcessor
 	{
-		// Only OnStay stage is used, we can filter out other to prevent unnecessary method calls.
-		return EKCCStages.OnStay;
-	}
+		// PRIVATE MEMBERS
 
-	public override void OnStay(KCC kcc, KCCData data)
-	{
-		if (_force.IsZero() == true)
-			return;
+		[SerializeField]
+		private Vector3 _force;
+		[SerializeField]
+		private float _maxDistance;
 
-		Vector3 rotatedForce = transform.rotation * _force;
+		// KCCProcessor INTERFACE
 
-		if (_maxDistance > 0.0f)
+		public override EKCCStages GetValidStages(KCC kcc, KCCData data)
 		{
-			// Magnitude of the force depends on distance between KCC and processor.
-
-			rotatedForce *= 1.0f - Mathf.Clamp(Vector3.Distance(transform.position, data.TargetPosition), 0.0f, _maxDistance) / _maxDistance;
+			// Only OnStay stage is used, we can filter out other to prevent unnecessary method calls.
+			return EKCCStages.OnStay;
 		}
 
-		// Force is applied every KCC update (both fixed and render)
+		public override void OnStay(KCC kcc, KCCData data)
+		{
+			if (_force.IsZero() == true)
+				return;
 
-		kcc.AddExternalForce(rotatedForce);
+			Vector3 rotatedForce = transform.rotation * _force;
+
+			if (_maxDistance > 0.0f)
+			{
+				// Magnitude of the force depends on distance between KCC and processor.
+
+				rotatedForce *= 1.0f - Mathf.Clamp(Vector3.Distance(transform.position, data.TargetPosition), 0.0f, _maxDistance) / _maxDistance;
+			}
+
+			// Force is applied every KCC update (both fixed and render)
+
+			kcc.AddExternalForce(rotatedForce);
+		}
 	}
 }

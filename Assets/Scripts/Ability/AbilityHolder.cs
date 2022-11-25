@@ -1,106 +1,107 @@
-﻿using System.Collections;
+﻿using Fusion;
 using UnityEngine;
-using Fusion;
-using System.Collections.Generic;
 
-public class AbilityHolder : NetworkBehaviour
+namespace Ability
 {
-    private Ability ability = null;
-
-    public bool IsBusy => abilityState != AbilityState.Ready;
-
-    [Networked] private AbilityState abilityState { get; set; } = AbilityState.Ready;
-
-    [Networked] private TickTimer timer { get; set; }
-
-    public void Activate(PlayerController playerController, Ability ability)
+    public class AbilityHolder : NetworkBehaviour
     {
-        if (abilityState != AbilityState.Ready) return;
+        private Ability ability = null;
 
-        this.ability = ability;
+        public bool IsBusy => abilityState != AbilityState.Ready;
 
-        if (this.ability.CanAim)
+        [Networked] private AbilityState abilityState { get; set; } = AbilityState.Ready;
+
+        [Networked] private TickTimer timer { get; set; }
+
+        public void Activate(PlayerController playerController, Ability ability)
         {
-            this.ability.Activate(playerController, GetLagcompensatedHitTransform(playerController.PlayerCamera.transform));
-        }
-        else
-        {
-            this.ability.Activate(playerController);
-        }
+            if (abilityState != AbilityState.Ready) return;
 
-        abilityState = AbilityState.Prepare;
-        this.ability.OnPrepare();
-        timer = TickTimer.CreateFromSeconds(Runner, this.ability.PrepareTime);
-    }
+            this.ability = ability;
 
-    public override void FixedUpdateNetwork()
-    {
-        if (ability == null) return;
+            if (this.ability.CanAim)
+            {
+                this.ability.Activate(playerController, GetLagcompensatedHitTransform(playerController.PlayerCamera.transform));
+            }
+            else
+            {
+                this.ability.Activate(playerController);
+            }
 
-        switch (abilityState)
-        {
-            case AbilityState.Prepare:
-                if (timer.Expired(Runner))
-                {
-                    abilityState = AbilityState.Execute;
-                    ability.OnExecute();
-                    timer = TickTimer.CreateFromSeconds(Runner, ability.ExcuteTime);
-                }
-                else
-                {
-                    ability.PrepareUpdate();
-                }
-                break;
-            case AbilityState.Execute:
-                if (timer.Expired(Runner))
-                {
-                    abilityState = AbilityState.CleanUp;
-                    ability.OnCleanUp();
-                    timer = TickTimer.CreateFromSeconds(Runner, ability.CleanUpTime);
-                }
-                else
-                {
-                    ability.ExcecuteUpdate();
-                }
-                break;
-            case AbilityState.CleanUp:
-                if (timer.Expired(Runner))
-                {
-                    abilityState = AbilityState.Ready;
-                    ability.Deactivate();
-                }
-                else
-                {
-                    ability.CleanUpUpdate();
-                }
-                break;
-        }
-    }
-
-    private Transform GetLagcompensatedHitTransform(Transform shootPoint)
-    {
-        Transform hitTrans = null;
-
-        if(Runner.LagCompensation.Raycast(
-            shootPoint.position,
-            shootPoint.rotation * Vector3.forward,
-            Mathf.Infinity,
-            Object.InputAuthority,
-            out LagCompensatedHit hit,
-            -1,
-            HitOptions.IgnoreInputAuthority | HitOptions.IncludePhysX))
-        {
-            hitTrans = hit.GameObject.transform;
+            abilityState = AbilityState.Prepare;
+            this.ability.OnPrepare();
+            timer = TickTimer.CreateFromSeconds(Runner, this.ability.PrepareTime);
         }
 
-        return hitTrans;
-    }
+        public override void FixedUpdateNetwork()
+        {
+            if (ability == null) return;
 
-    private enum AbilityState
-    {
-        Ready,
-        Prepare,
-        Execute,
-        CleanUp
+            switch (abilityState)
+            {
+                case AbilityState.Prepare:
+                    if (timer.Expired(Runner))
+                    {
+                        abilityState = AbilityState.Execute;
+                        ability.OnExecute();
+                        timer = TickTimer.CreateFromSeconds(Runner, ability.ExcuteTime);
+                    }
+                    else
+                    {
+                        ability.PrepareUpdate();
+                    }
+                    break;
+                case AbilityState.Execute:
+                    if (timer.Expired(Runner))
+                    {
+                        abilityState = AbilityState.CleanUp;
+                        ability.OnCleanUp();
+                        timer = TickTimer.CreateFromSeconds(Runner, ability.CleanUpTime);
+                    }
+                    else
+                    {
+                        ability.ExcecuteUpdate();
+                    }
+                    break;
+                case AbilityState.CleanUp:
+                    if (timer.Expired(Runner))
+                    {
+                        abilityState = AbilityState.Ready;
+                        ability.Deactivate();
+                    }
+                    else
+                    {
+                        ability.CleanUpUpdate();
+                    }
+                    break;
+            }
+        }
+
+        private Transform GetLagcompensatedHitTransform(Transform shootPoint)
+        {
+            Transform hitTrans = null;
+
+            if(Runner.LagCompensation.Raycast(
+                   shootPoint.position,
+                   shootPoint.rotation * Vector3.forward,
+                   Mathf.Infinity,
+                   Object.InputAuthority,
+                   out LagCompensatedHit hit,
+                   -1,
+                   HitOptions.IgnoreInputAuthority | HitOptions.IncludePhysX))
+            {
+                hitTrans = hit.GameObject.transform;
+            }
+
+            return hitTrans;
+        }
+
+        private enum AbilityState
+        {
+            Ready,
+            Prepare,
+            Execute,
+            CleanUp
+        }
     }
 }

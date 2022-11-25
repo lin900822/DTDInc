@@ -1,29 +1,29 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
 
-public class CreateRoomPanel : Panel
+namespace Lobby
 {
-    [SerializeField] private TMP_InputField roomNameInputField = null;
-
-    public void OnBackBtnClicked()
+    public class CreateRoomPanel : Panel
     {
-        menuManager.SwitchPanel(0);
-    }
+        [SerializeField] private TMP_InputField roomNameInputField = null;
 
-    public async void OnConfirmBtnClicked()
-    {
-        menuManager.StartLoading();
-
-        string roomName = roomNameInputField.text;
-
-        var result = await GameApp.Instance.CreateRoom(roomName, 4);
-
-        if (result.Ok)
+        public void OnBackBtnClicked()
         {
-            menuManager.SwitchPanel(2);
+            menuManager.SwitchPanel(0);
+        }
+
+        public async void OnConfirmBtnClicked()
+        {
+            menuManager.StartLoading();
+
+            string roomName = roomNameInputField.text;
+
+            var result = await GameApp.Instance.CreateRoom(roomName, 4);
+
+            if (result.Ok)
+            {
+                menuManager.SwitchPanel(2);
+            }
         }
     }
 }
