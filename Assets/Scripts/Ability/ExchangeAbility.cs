@@ -1,34 +1,37 @@
 ﻿using Fusion;
-using System.Collections;
+using KCC_Processor;
 using UnityEngine;
 
-public class ExchangeAbility : Ability
+namespace Ability
 {
-    [SerializeField] private GameObject effect = null;
-    [SerializeField] private TeleportKCCProcessor teleportKCCProcessor = null;
-
-    public override void OnExecute()
+    public class ExchangeAbility : Ability
     {
-        if (aimmedTrans == null) return;
+        [SerializeField] private GameObject effect = null;
+        [SerializeField] private TeleportKCCProcessor teleportKCCProcessor = null;
 
-        if(aimmedTrans.TryGetComponent<PlayerController>(out var hitPlayer))
+        public override void OnExecute()
         {
-            Vector3 currentPosition = playerController.transform.position;
+            if (aimmedTrans == null) return;
 
-            teleportKCCProcessor.SetTarget(aimmedTrans);
-            playerController.KCC.AddModifier(teleportKCCProcessor);
+            if(aimmedTrans.TryGetComponent<PlayerController>(out var hitPlayer))
+            {
+                Vector3 currentPosition = playerController.transform.position;
 
-            hitPlayer.KCC.SetPosition(currentPosition);
+                teleportKCCProcessor.SetTarget(aimmedTrans);
+                playerController.KCC.AddModifier(teleportKCCProcessor);
 
-            if (Object.HasInputAuthority)
-                PlayEffect_RPC(currentPosition);
+                hitPlayer.KCC.SetPosition(currentPosition);
+
+                if (Object.HasInputAuthority)
+                    PlayEffect_RPC(currentPosition);
+            }
         }
-    }
 
-    [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
-    private void PlayEffect_RPC(Vector3 pos)
-    {
-        Instantiate(effect, pos + Vector3.up * 1.5f, Quaternion.identity);
+        [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
+        private void PlayEffect_RPC(Vector3 pos)
+        {
+            Instantiate(effect, pos + Vector3.up * 1.5f, Quaternion.identity);
+        }
     }
 }
  

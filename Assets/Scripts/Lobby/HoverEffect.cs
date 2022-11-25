@@ -1,23 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-public class HoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+namespace Lobby
 {
-    [SerializeField] private Image image = null;
-
-    [SerializeField] private Sprite hoveredSprite = null;
-    [SerializeField] private Sprite unhoveredSprite = null;
-
-    public void OnPointerEnter(PointerEventData eventData)
+    public class HoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        image.sprite = hoveredSprite;
-    }
+        [SerializeField] private Image image = null;
 
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        image.sprite = unhoveredSprite;
+        [SerializeField] private Sprite hoveredSprite = null;
+        [SerializeField] private Sprite unhoveredSprite = null;
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            image.sprite = hoveredSprite;
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            image.sprite = unhoveredSprite;
+        }
     }
 }

@@ -1,66 +1,100 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using Fusion;
-using UnityEngine.SceneManagement;
 using System.Threading.Tasks;
+using Fusion;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
-public class GameApp : MonoBehaviour
+namespace Lobby
 {
-    public static GameApp Instance { get; private set; }
-
-    [SerializeField] private NetworkRunner runner = null;
-
-    private void Awake()
+    public class GameApp : MonoBehaviour
     {
-        if(Instance == null)
-        {
-            Instance = this;
+        public static GameApp Instance { get; private set; }
 
-            DontDestroyOnLoad(gameObject);
+        [SerializeField] private NetworkRunner networkRunner = null;
+        [SerializeField] private NetworkEvents networkEvents = null;
+
+        [SerializeField] private PlayerNetworkData playerNetworkDataPrefab = null;
+        
+        public Dictionary<PlayerRef, PlayerNetworkData> PlayerNetworkDataList { get; } = new Dictionary<PlayerRef, PlayerNetworkData>();
+
+        private void Awake()
+        {
+            if(Instance == null)
+            {
+                Instance = this;
+                    
+                networkEvents.PlayerJoined.AddListener(OnPlayerJoined);
+                networkEvents.PlayerLeft.AddListener(OnPlayerLeft);
+                
+                DontDestroyOnLoad(gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
-        else
+
+        public async Task<StartGameResult> CreateRoom(string roomName, int maxPlayerAmount)
         {
-            Destroy(gameObject);
+            networkRunner.ProvideInput = true;
+
+            var result = await networkRunner.JoinSessionLobby(SessionLobby.ClientServer);
+
+            if (!result.Ok) return result;
+
+            result = await networkRunner.StartGame(new StartGameArgs()
+            {
+                GameMode = GameMode.Host,
+                SessionName = roomName,
+                PlayerCount = maxPlayerAmount,
+                Scene = SceneManager.GetActiveScene().buildIndex,
+                SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
+            });
+
+            return result;
         }
-    }
 
-    public async Task<StartGameResult> CreateRoom(string roomName, int maxPlayerAmount)
-    {
-        runner.ProvideInput = true;
-
-        var result = await runner.JoinSessionLobby(SessionLobby.ClientServer);
-
-        if (!result.Ok) return result;
-
-        result = await runner.StartGame(new StartGameArgs()
+        public async Task<StartGameResult> JoinRoom(string roomName)
         {
-            GameMode = GameMode.Host,
-            SessionName = roomName,
-            PlayerCount = maxPlayerAmount,
-            Scene = SceneManager.GetActiveScene().buildIndex,
-            SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
-        });
+            networkRunner.ProvideInput = true;
 
-        return result;
-    }
+            var result = await networkRunner.JoinSessionLobby(SessionLobby.ClientServer);
 
-    public async Task<StartGameResult> JoinRoom(string roomName)
-    {
-        runner.ProvideInput = true;
+            if (!result.Ok) return result;
 
-        var result = await runner.JoinSessionLobby(SessionLobby.ClientServer);
+            result = await networkRunner.StartGame(new StartGameArgs()
+            {
+                GameMode = GameMode.Client,
+                SessionName = roomName,
+                Scene = SceneManager.GetActiveScene().buildIndex,
+                SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
+            });
 
-        if (!result.Ok) return result;
+            return result;
+        }
 
-        result = await runner.StartGame(new StartGameArgs()
+        public void AddPlayerNetworkData(PlayerNetworkData data)
         {
-            GameMode = GameMode.Client,
-            SessionName = roomName,
-            Scene = SceneManager.GetActiveScene().buildIndex,
-            SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
-        });
+            PlayerNetworkDataList.Add(data.Object.InputAuthority, data);
+            
+            data.transform.SetParent(transform);
+        }
+        
+        // Events
 
-        return result;
+        private void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
+        {
+            runner.Spawn(playerNetworkDataPrefab, transform.position, transform.rotation, player);
+        } 
+        
+        private void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
+        {
+            if (PlayerNetworkDataList.TryGetValue(player, out PlayerNetworkData playerNetworkData))
+            {
+                runner.Despawn(playerNetworkData.Object);
+                PlayerNetworkDataList.Remove(player);
+            }
+        }
     }
 }

@@ -1,27 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class Panel : MonoBehaviour
+namespace Lobby
 {
-    [SerializeField] protected MenuManager menuManager = null;
-
-    [SerializeField] protected CanvasGroup canvasGroup = null;
-
-    public void SetActive(bool isActive)
+    public class Panel : MonoBehaviour
     {
-        if (isActive)
+        [SerializeField] protected MenuManager menuManager = null;
+
+        [SerializeField] protected CanvasGroup canvasGroup = null;
+
+        public void SetActive(bool isActive)
         {
-            canvasGroup.alpha = 1f;
-            canvasGroup.interactable = true;
-            canvasGroup.blocksRaycasts = true;
-        }
-        else
-        {
-            canvasGroup.alpha = 0f;
-            canvasGroup.interactable = false;
-            canvasGroup.blocksRaycasts = false;
+            if (isActive)
+            {
+                canvasGroup.alpha = 1f;
+                canvasGroup.interactable = true;
+                canvasGroup.blocksRaycasts = true;
+            }
+            else
+            {
+                canvasGroup.alpha = 0f;
+                canvasGroup.interactable = false;
+                canvasGroup.blocksRaycasts = false;
+            }
         }
     }
 }

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6282684257492240059}
   - component: {fileID: 6282684257492240058}
   - component: {fileID: 6282684257492240061}
+  - component: {fileID: 1518050609676752912}
   m_Layer: 0
   m_Name: Game App
   m_TagString: Untagged
@@ -57,4 +58,67 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66679ff42766a8e46a2a4cfc906a7d0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runner: {fileID: 6282684257492240058}
+  networkRunner: {fileID: 6282684257492240058}
+  networkEvents: {fileID: 1518050609676752912}
+  playerNetworkDataPrefab: {fileID: 4393251662132591519, guid: 0ab4e17c3f520084e8300595c5df7097,
+    type: 3}
+--- !u!114 &1518050609676752912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6282684257492240060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -232609262, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnInput:
+    m_PersistentCalls:
+      m_Calls: []
+  OnInputMissing:
+    m_PersistentCalls:
+      m_Calls: []
+  OnConnectedToServer:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDisconnectedFromServer:
+    m_PersistentCalls:
+      m_Calls: []
+  OnConnectRequest:
+    m_PersistentCalls:
+      m_Calls: []
+  OnConnectFailed:
+    m_PersistentCalls:
+      m_Calls: []
+  PlayerJoined:
+    m_PersistentCalls:
+      m_Calls: []
+  PlayerLeft:
+    m_PersistentCalls:
+      m_Calls: []
+  OnSimulationMessage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnShutdown:
+    m_PersistentCalls:
+      m_Calls: []
+  OnSessionListUpdate:
+    m_PersistentCalls:
+      m_Calls: []
+  OnCustomAuthenticationResponse:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHostMigration:
+    m_PersistentCalls:
+      m_Calls: []
+  OnSceneLoadDone:
+    m_PersistentCalls:
+      m_Calls: []
+  OnSceneLoadStart:
+    m_PersistentCalls:
+      m_Calls: []
+  OnReliableData:
+    m_PersistentCalls:
+      m_Calls: []

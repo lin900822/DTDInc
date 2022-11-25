@@ -1,72 +1,75 @@
-﻿using UnityEngine;
-using Fusion.KCC;
+﻿using Fusion.KCC;
+using UnityEngine;
 
-/// <summary>
-/// Interface to notify other processors about teleport event.
-/// </summary>
-public interface ITeleportResponder
+namespace KCC_Processor
 {
-	void OnTeleport(KCC kcc, KCCData data);
-}
-
-/// <summary>
-/// Example processor - teleporting to specific position and optionally setting look rotation and resetting velocities.
-/// </summary>
-public sealed class TeleportKCCProcessor : KCCProcessor
-{
-	// PRIVATE MEMBERS
-
-	[SerializeField]
-	private Transform _target;
-	[SerializeField]
-	private bool _setLookRotation;
-	[SerializeField]
-	private bool _resetDynamicVelocity;
-	[SerializeField]
-	private bool _resetKinematicVelocity;
-
-	public void SetTarget(Transform target)
-    {
-		_target = target;
+	/// <summary>
+	/// Interface to notify other processors about teleport event.
+	/// </summary>
+	public interface ITeleportResponder
+	{
+		void OnTeleport(KCC kcc, KCCData data);
 	}
 
-	// KCCProcessor INTERFACE
-
-	public override EKCCStages GetValidStages(KCC kcc, KCCData data)
+	/// <summary>
+	/// Example processor - teleporting to specific position and optionally setting look rotation and resetting velocities.
+	/// </summary>
+	public sealed class TeleportKCCProcessor : KCCProcessor
 	{
-		// No KCC stage is used in this processor, we can filter them out to prevent unnecessary method calls.
-		return EKCCStages.None;
-	}
+		// PRIVATE MEMBERS
 
-	public override void OnEnter(KCC kcc, KCCData data)
-	{
-		// Teleport only in fixed update to not introduce glitches caused by incorrect render extrapolation.
-		if (kcc.IsInFixedUpdate == false)
-			return;
+		[SerializeField]
+		private Transform _target;
+		[SerializeField]
+		private bool _setLookRotation;
+		[SerializeField]
+		private bool _resetDynamicVelocity;
+		[SerializeField]
+		private bool _resetKinematicVelocity;
 
-		kcc.SetPosition(_target.position);
-
-		if (_setLookRotation == true)
+		public void SetTarget(Transform target)
 		{
-			kcc.SetLookRotation(_target.rotation, true);
+			_target = target;
 		}
 
-		if (_resetDynamicVelocity == true)
+		// KCCProcessor INTERFACE
+
+		public override EKCCStages GetValidStages(KCC kcc, KCCData data)
 		{
-			kcc.SetDynamicVelocity(Vector3.zero);
+			// No KCC stage is used in this processor, we can filter them out to prevent unnecessary method calls.
+			return EKCCStages.None;
 		}
 
-		if (_resetKinematicVelocity == true)
+		public override void OnEnter(KCC kcc, KCCData data)
 		{
-			kcc.SetKinematicVelocity(Vector3.zero);
-		}
+			// Teleport only in fixed update to not introduce glitches caused by incorrect render extrapolation.
+			if (kcc.IsInFixedUpdate == false)
+				return;
 
-		// Notify all responders
-		foreach (ITeleportResponder responder in kcc.GetProcessors<ITeleportResponder>(true))
-		{
-			responder.OnTeleport(kcc, data);
-		}
+			kcc.SetPosition(_target.position);
 
-		kcc.RemoveModifier(this);
+			if (_setLookRotation == true)
+			{
+				kcc.SetLookRotation(_target.rotation, true);
+			}
+
+			if (_resetDynamicVelocity == true)
+			{
+				kcc.SetDynamicVelocity(Vector3.zero);
+			}
+
+			if (_resetKinematicVelocity == true)
+			{
+				kcc.SetKinematicVelocity(Vector3.zero);
+			}
+
+			// Notify all responders
+			foreach (ITeleportResponder responder in kcc.GetProcessors<ITeleportResponder>(true))
+			{
+				responder.OnTeleport(kcc, data);
+			}
+
+			kcc.RemoveModifier(this);
+		}
 	}
 }
