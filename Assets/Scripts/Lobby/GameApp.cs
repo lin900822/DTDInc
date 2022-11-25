@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Fusion;
@@ -11,6 +12,8 @@ namespace Lobby
     {
         public static GameApp Instance { get; private set; }
 
+        public NetworkEvents Event => networkEvents;
+        
         [SerializeField] private NetworkRunner networkRunner = null;
         [SerializeField] private NetworkEvents networkEvents = null;
 
@@ -35,6 +38,26 @@ namespace Lobby
             }
         }
 
+        private void Update()
+        {
+            if (CheckIfAllPlayerReady())
+            {
+                networkRunner.SetActiveScene("Wilson");
+            }
+        }
+
+        private bool CheckIfAllPlayerReady()
+        {
+            if (PlayerNetworkDataList.Count <= 0) return false;
+            
+            foreach (var data in PlayerNetworkDataList)
+            {
+                if (data.Value.IsReady == false) return false;
+            }
+
+            return true;
+        }
+
         public async Task<StartGameResult> CreateRoom(string roomName, int maxPlayerAmount)
         {
             networkRunner.ProvideInput = true;
@@ -48,7 +71,7 @@ namespace Lobby
                 GameMode = GameMode.Host,
                 SessionName = roomName,
                 PlayerCount = maxPlayerAmount,
-                Scene = SceneManager.GetActiveScene().buildIndex,
+                Scene = 3,
                 SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
             });
 
@@ -67,7 +90,7 @@ namespace Lobby
             {
                 GameMode = GameMode.Client,
                 SessionName = roomName,
-                Scene = SceneManager.GetActiveScene().buildIndex,
+                Scene = 3,
                 SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
             });
 
@@ -79,6 +102,22 @@ namespace Lobby
             PlayerNetworkDataList.Add(data.Object.InputAuthority, data);
             
             data.transform.SetParent(transform);
+        }
+
+        public PlayerNetworkData GetPlayerNetworkData(PlayerRef player = default)
+        {
+            PlayerNetworkData data;
+            
+            if (player == default)
+            {
+                data = PlayerNetworkDataList.TryGetValue(networkRunner.LocalPlayer, out PlayerNetworkData obj) ? obj : null;
+            }
+            else
+            {
+                data = PlayerNetworkDataList.TryGetValue(player, out PlayerNetworkData obj) ? obj : null;
+            }
+
+            return data;
         }
         
         // Events

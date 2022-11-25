@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Wilson/Scenes/Wilson.unity
     guid: 37c81c231f94ec74eaa17599e3da4c63
+  - enabled: 1
+    path: Assets/Amelia/Scenes/PlayerSelection.unity
+    guid: bc4e7916c9d93cd4c8a5e3c3a753c22d
   m_configObjects: {}

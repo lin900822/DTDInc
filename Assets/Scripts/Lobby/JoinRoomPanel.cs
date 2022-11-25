@@ -22,7 +22,7 @@ namespace Lobby
 
             if (result.Ok)
             {
-                menuManager.SwitchPanel(1);
+                //menuManager.SwitchPanel(1);
             }
         }
     }

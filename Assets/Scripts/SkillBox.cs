@@ -58,6 +58,7 @@ public class SkillBox : NetworkBehaviour
 
     private void DetectPlayer()
     {
+        if (!Object.HasStateAuthority) return;
         if (!IsActive) return;
 
         int hitAmount = Runner.LagCompensation.OverlapBox(transform.position, detectionBox, Quaternion.identity, Object.InputAuthority, hits, hitLayer, HitOptions.IgnoreInputAuthority);
