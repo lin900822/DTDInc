@@ -16,7 +16,7 @@ namespace CharacterControl
         [SerializeField] private CharacterInfos[] characterInfos = null;
 
 
-        private int selectedIndex=-1;
+        private int selectedIndex=0;
 
         private void Start()
         {
