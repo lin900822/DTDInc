@@ -16,7 +16,8 @@ namespace CharacterControl
             btn[1].onClick.AddListener(OnBtn1Clicked);
             btn[2].onClick.AddListener(OnBtn2Clicked);
             btn[3].onClick.AddListener(OnBtn3Clicked);
-            characterSelectionController=gameObject.GetComponent<CharacterSelectionController>();
+            btn[4].onClick.AddListener(OnBtn4Clicked);
+            characterSelectionController =gameObject.GetComponent<CharacterSelectionController>();
         }
 
 
@@ -30,23 +31,29 @@ namespace CharacterControl
 
         public void OnBtn1Clicked()
         {
-            Debug.Log("Red");
+            //Debug.Log("Red");
             characterSelectionController.SetSelectedIndex(1);
         }
 
         public void OnBtn2Clicked()
         {
-            Debug.Log("Green");
+            //Debug.Log("Green");
             characterSelectionController.SetSelectedIndex(2);
         }
 
         public void OnBtn3Clicked()
         {
-            Debug.Log("Blue");
+            //Debug.Log("Blue");
             characterSelectionController.SetSelectedIndex(3);
         }
 
-       
+        public void OnBtn4Clicked()
+        {
+            //Debug.Log("Blue");
+            characterSelectionController.SetSelectedIndex(4);
+        }
+
+
     }
 
 }
