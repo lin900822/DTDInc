@@ -14,6 +14,8 @@ public class PlayerUIHandler : MonoBehaviour
 
     [SerializeField] private Sprite[] crosshairSprites = null;
 
+    [SerializeField] private TMP_Text playerNameTxt = null;
+    
     public void UpdateSelectedSlot(int selectedIndex)
     {
         for (int i = 0; i < abilityIconImgs.Length; i++)
@@ -57,6 +59,11 @@ public class PlayerUIHandler : MonoBehaviour
         {
             crosshairImg.sprite = crosshairSprites[0];
         }
+    }
+
+    public void SetPlayerName(string value)
+    {
+        playerNameTxt.text = value;
     }
 }
 

@@ -22,6 +22,11 @@ public class PlayerNetworkData : NetworkBehaviour
         if (_gameApp != null)
         {
             _gameApp.AddPlayerNetworkData(this);
+
+            if (Object.HasInputAuthority)
+            {
+                SetPlayerName_RPC(_gameApp.PlayerName);
+            }
         }
     }
 

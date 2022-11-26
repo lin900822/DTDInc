@@ -4,6 +4,7 @@ using UnityEngine;
 using Fusion;
 using Cinemachine;
 using Fusion.KCC;
+using Lobby;
 
 public class PlayerController : NetworkBehaviour
 {
@@ -37,9 +38,15 @@ public class PlayerController : NetworkBehaviour
 
     public override void Spawned()
     {
+        SetLocalComponents();
+
+        SetPlayerName();
+    }
+
+    private void SetLocalComponents()
+    {
         if (Object.HasInputAuthority)
         {
-            
         }
         else
         {
@@ -47,6 +54,13 @@ public class PlayerController : NetworkBehaviour
             audioListener.enabled = false;
             playerUi.SetActive(false);
         }
+    }
+
+    private void SetPlayerName()
+    {
+        var playerName = GameApp.Instance.GetPlayerNetworkData(Object.InputAuthority).PlayerName;
+
+        uIHandler.SetPlayerName(playerName);
     }
 
     public override void Despawned(NetworkRunner runner, bool hasState)

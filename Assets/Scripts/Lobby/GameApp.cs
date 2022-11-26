@@ -13,6 +13,8 @@ namespace Lobby
         public static GameApp Instance { get; private set; }
 
         public NetworkEvents Event => networkEvents;
+
+        public string PlayerName = "";
         
         [SerializeField] private NetworkRunner networkRunner = null;
         [SerializeField] private NetworkEvents networkEvents = null;
