@@ -19,7 +19,7 @@ namespace GamePlay
 
         private readonly List<int> _cubesToRecover = new List<int>();
 
-        private void Awake()
+        private void Start()
         {
             _gameManager = GameManager.Instance;
         }
@@ -71,6 +71,8 @@ namespace GamePlay
 
         public void RecoverAllCubes()
         {
+            if (!Object.HasStateAuthority) return;
+            
             RecoverCubes(_destroyedCubesIndex.Count);
         }
 
@@ -79,7 +81,7 @@ namespace GamePlay
         [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
         public void DestroyOneCube_RPC(int index)
         {
-            if(_gameManager.MatchManager.Stage != RoundStage.InGame) return;
+            if(_gameManager.RoundManager.Stage != RoundStage.InGame) return;
         
             if (index < 0 || index >= cubes.Length) return;
 
@@ -94,7 +96,7 @@ namespace GamePlay
         [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
         public void DestroyCubes_RPC(int[] indexes)
         {
-            if(_gameManager.MatchManager.Stage != RoundStage.InGame) return;
+            if(_gameManager.RoundManager.Stage != RoundStage.InGame) return;
         
             foreach(var index in indexes)
             {

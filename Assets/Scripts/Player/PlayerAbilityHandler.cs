@@ -69,6 +69,15 @@ namespace Ability
 
         // Public Methods
 
+        public void ClearAllAbilities()
+        {
+            for (var i = 0; i < abilitySlotsList.Count; i++)
+            {
+                var slot = new AbilitySlot("", 0);
+                abilitySlotsList.Set(i, slot);
+            }
+        }
+        
         public bool AddAbilityToSlots(string abilityName)
         {
             int i = 0;

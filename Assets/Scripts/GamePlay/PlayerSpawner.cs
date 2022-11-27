@@ -6,9 +6,9 @@ namespace GamePlay
 {
     public class PlayerSpawner : NetworkBehaviour
     {
-        [SerializeField] private NetworkObject[] playerPrefabs = null;
+        [SerializeField] private PlayerController[] playerPrefabs = null;
     
-        private Dictionary<PlayerRef, NetworkObject> playerList = new Dictionary<PlayerRef, NetworkObject>();
+        public readonly Dictionary<PlayerRef, PlayerController> PlayerList = new Dictionary<PlayerRef, PlayerController>();
     
         public override void Spawned()
         {
@@ -31,7 +31,9 @@ namespace GamePlay
 
                 index = Mathf.Clamp(index, 0, 3);
             
-                Runner.Spawn(playerPrefabs[index], spawnPoint.position, spawnPoint.rotation, player.Key);
+                var playerController = Runner.Spawn(playerPrefabs[index], spawnPoint.position, spawnPoint.rotation, player.Key);
+                
+                PlayerList.Add(player.Key, playerController);
             }
         }
 
@@ -40,12 +42,12 @@ namespace GamePlay
             GameApp.Instance.Event.PlayerLeft.AddListener(OnPlayerLeft);
         }
 
-        public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
+        private void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
         {
-            if (playerList.TryGetValue(player, out NetworkObject networkObject))
+            if (PlayerList.TryGetValue(player, out PlayerController playerController))
             {
-                runner.Despawn(networkObject);
-                playerList.Remove(player);
+                runner.Despawn(playerController.Object);
+                PlayerList.Remove(player);
             }
         }
     }

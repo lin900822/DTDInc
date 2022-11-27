@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace GamePlay
 {
@@ -21,7 +23,14 @@ namespace GamePlay
         [Networked(OnChanged = nameof(OnIsActiveChanged))] private NetworkBool IsActive { get; set; }
         [Networked] private TickTimer coolDownTimer { get; set; }
 
+        private GameManager _gameManager = null;
+        
         private List<LagCompensatedHit> hits = new List<LagCompensatedHit>();
+
+        private void Start()
+        {
+            _gameManager = GameManager.Instance;
+        }
 
         public override void Spawned()
         {
@@ -59,6 +68,7 @@ namespace GamePlay
 
         private void DetectPlayer()
         {
+            if (_gameManager.RoundManager.Stage != RoundStage.InGame) return;
             if (!Object.HasStateAuthority) return;
             if (!IsActive) return;
 

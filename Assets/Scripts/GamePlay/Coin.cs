@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
@@ -16,8 +17,17 @@ namespace GamePlay
 
         [Networked] private NetworkBehaviourId OwnerId { get; set; }
 
+        private GameManager _gameManager = null;
+
+        private void Start()
+        {
+            _gameManager = GameManager.Instance;
+        }
+
         public override void FixedUpdateNetwork()
         {
+            if (_gameManager.RoundManager.Stage != RoundStage.InGame) return;
+            
             _playerController = Runner.TryFindBehaviour(OwnerId, out PlayerController obj) ? obj : null;
 
             FollowPlayer();
@@ -31,9 +41,7 @@ namespace GamePlay
         {
             if (transform.position.y < 0)
             {
-                OwnerId = NetworkBehaviourId.None;
-
-                transform.position = new Vector3(0, 2, 0);
+                ResetCoin();
             }
         }
 
@@ -56,6 +64,8 @@ namespace GamePlay
         
         public override void Render()
         {
+            if (_gameManager.RoundManager.Stage != RoundStage.InGame) return;
+            
             FollowPlayer();
         }
 
@@ -65,6 +75,13 @@ namespace GamePlay
             {
                 transform.position = _playerController.transform.position + new Vector3(0, 2f, 0);
             }
+        }
+
+        public void ResetCoin()
+        {
+            OwnerId = NetworkBehaviourId.None;
+
+            transform.position = new Vector3(0, 2, 0);
         }
     }
 }

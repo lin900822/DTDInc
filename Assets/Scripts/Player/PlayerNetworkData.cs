@@ -26,7 +26,7 @@ public class PlayerNetworkData : NetworkBehaviour
 
             if (Object.HasInputAuthority)
             {
-                SetPlayerName_RPC(_gameApp.PlayerName);
+                SetPlayerName_RPC(_gameApp.playerName);
             }
         }
     }

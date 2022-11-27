@@ -21,7 +21,7 @@ public class Launcher : MonoBehaviour
         
         var gameApp = Instantiate(gameAppPrefab, Vector3.zero, Quaternion.identity);
 
-        gameApp.PlayerName = playerName;
+        gameApp.playerName = playerName;
         
         SceneManager.LoadScene(nextScene);
     }

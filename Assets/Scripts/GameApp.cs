@@ -10,9 +10,10 @@ public class GameApp : MonoBehaviour
 {
     public static GameApp Instance { get; private set; }
 
-    public NetworkEvents Event => networkEvents;
+    public NetworkRunner Runner => networkRunner;
+    public NetworkEvents Event  => networkEvents;
 
-    public string PlayerName = "";
+    [HideInInspector] public string playerName = "";
         
     [SerializeField] private NetworkRunner networkRunner = null;
     [SerializeField] private NetworkEvents networkEvents = null;
@@ -120,7 +121,7 @@ public class GameApp : MonoBehaviour
         return data;
     }
         
-    // Events
+    // Network Events
 
     private void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
