@@ -11,7 +11,8 @@ namespace GamePlay
         public FloorManager FloorManager => floorManager;
         public RoundManager RoundManager => roundManager;
         public GameUIManager GameUIManager => gameUIManager;
-    
+        public Coin Coin => coin;
+        
         [SerializeField] private FloorManager floorManager      = null;
         [SerializeField] private RoundManager roundManager      = null;
         [SerializeField] private PlayerSpawner playerSpawner    = null;
@@ -67,7 +68,6 @@ namespace GamePlay
             {
                 data.Value.KillAmount = 0;
                 data.Value.DeathAmount = 0;
-                data.Value.HasCoin = false;
             }
 
             var players = playerSpawner.PlayerList;

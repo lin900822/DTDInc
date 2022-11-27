@@ -25,13 +25,11 @@ namespace GamePlay
         public override void EnterState()
         {
             RoundManager.StartReady();
-            
-            GameManager.Instance.GameUIManager.ShowMessage("Ready...");
         }
 
         public override void OnLogic()
         {
-            
+            GameManager.Instance.GameUIManager.ShowMessage($"Game will start in {RoundManager.TimerRemainingTime:0}");
         }
 
         public override void ExitState()
@@ -65,22 +63,53 @@ namespace GamePlay
     public class GameOverState : RoundState
     {
         public GameOverState(RoundManager manager) : base(manager) { }
+
+        private float _enterTime = 999999f;
         
         public override void EnterState()
         {
             RoundManager.StartGameOver();
             
             GameManager.Instance.GameUIManager.ShowMessage("Game Over !");
+
+            _enterTime = Time.timeSinceLevelLoad;
         }
 
         public override void OnLogic()
         {
-            
+            if (Time.timeSinceLevelLoad - _enterTime >= 2f)
+            {
+                DetermineWinner();
+                _enterTime = 999999f;
+            }
         }
 
         public override void ExitState()
         {
             RoundManager.EndGameOver();
+        }
+
+        private void DetermineWinner()
+        {
+            var gameManager = GameManager.Instance;
+            var gameApp = GameApp.Instance;
+
+            var winnerId = gameManager.Coin.OwnerId;
+
+            var winnerPlayer = gameApp.Runner.TryFindBehaviour<PlayerController>(winnerId, out PlayerController playerController) ? playerController : null;
+
+            if (winnerPlayer != null)
+            {
+                var winnerData = GameApp.Instance.GetPlayerNetworkData(winnerPlayer.Object.InputAuthority);
+
+                var winnerName = winnerData.PlayerName;
+            
+                GameManager.Instance.GameUIManager.ShowMessage($"{winnerName} has won the Game !");
+            }
+            else
+            {
+                GameManager.Instance.GameUIManager.ShowMessage($"There is no winner !");
+            }
         }
     }
 }

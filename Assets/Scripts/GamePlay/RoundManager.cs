@@ -12,7 +12,9 @@ namespace GamePlay
         public event Action OnInGameEnd     = null;
         public event Action OnGameOverStart = null;
         public event Action OnGameOverEnd   = null;
-
+        
+        [HideInInspector] public float TimerRemainingTime => RoundTimer.RemainingTime(Runner).Value;
+        
         [SerializeField] private float readyTime    = 5f;
         [SerializeField] private float inGameTime   = 120f;
         [SerializeField] private float gameOverTime = 5f;

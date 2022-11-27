@@ -12,7 +12,6 @@ public class PlayerNetworkData : NetworkBehaviour
 
     [Networked] public int KillAmount { get; set; }
     [Networked] public int DeathAmount { get; set; }
-    [Networked] public NetworkBool HasCoin { get; set; }
 
     private GameApp _gameApp = null;
     

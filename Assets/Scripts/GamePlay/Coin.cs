@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace GamePlay
 {
     public class Coin : NetworkBehaviour
     {
-        [SerializeField] private float radius = 1f;
+        [SerializeField] private float sceneRadius = 45f;
+        [SerializeField] private float detectRadius = 1f;
 
         [SerializeField] private LayerMask hitLayers = default;
 
@@ -15,7 +17,7 @@ namespace GamePlay
 
         private readonly List<LagCompensatedHit> _hits = new List<LagCompensatedHit>();
 
-        [Networked] private NetworkBehaviourId OwnerId { get; set; }
+        [Networked] public NetworkBehaviourId OwnerId { get; set; }
 
         private GameManager _gameManager = null;
 
@@ -28,13 +30,13 @@ namespace GamePlay
         {
             if (_gameManager.RoundManager.Stage != RoundStage.InGame) return;
             
+            DetectPlayer();
+            
             _playerController = Runner.TryFindBehaviour(OwnerId, out PlayerController obj) ? obj : null;
 
             FollowPlayer();
 
             DetectIfIsOutOfBound();
-
-            DetectPlayer();
         }
 
         private void DetectIfIsOutOfBound()
@@ -48,10 +50,11 @@ namespace GamePlay
         private void DetectPlayer()
         {
             if (!Object.HasStateAuthority) return;
+            if (_playerController != null) return;
 
             _hits.Clear();
 
-            Runner.LagCompensation.OverlapSphere(transform.position, radius, Object.InputAuthority, _hits, hitLayers, HitOptions.None);
+            Runner.LagCompensation.OverlapSphere(transform.position, detectRadius, Object.InputAuthority, _hits, hitLayers, HitOptions.None);
 
             if (_hits.Count > 0)
             {
@@ -79,9 +82,24 @@ namespace GamePlay
 
         public void ResetCoin()
         {
+            if (!Object.HasStateAuthority) return;
+            
+            _hits.Clear();
+            
             OwnerId = NetworkBehaviourId.None;
+            _playerController = null;
 
-            transform.position = new Vector3(0, 2, 0);
+            float randomX;
+            float randomZ;
+
+            do
+            {
+                randomX = Random.Range(-sceneRadius, sceneRadius);
+                randomZ = Random.Range(-sceneRadius, sceneRadius);
+            } 
+            while ((randomX * randomX + randomZ * randomZ) > sceneRadius * sceneRadius);
+            
+            transform.position = new Vector3(randomX, 2, randomZ);
         }
     }
 }
