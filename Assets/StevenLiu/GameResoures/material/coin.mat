@@ -110,16 +110,16 @@ Material:
     - _Surface: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
-    - _alpha: 0.7
+    - _alpha: 0.8
     - _glowSpeed: 5
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _baseColor: {r: 0.4528302, g: 0.30545303, b: 0.1469562, a: 1}
+    - _baseColor: {r: 0.6981132, g: 0.4607793, b: 0.04873618, a: 1}
     - _glowColor: {r: 3.592157, g: 2.2588236, b: 1.3333334, a: 0}
-    - _glowRange: {r: 2, g: 4.5, b: 0, a: 0}
+    - _glowRange: {r: 1.5, g: 4, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &3111181269011126236
 MonoBehaviour:
