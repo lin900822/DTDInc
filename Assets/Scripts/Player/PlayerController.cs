@@ -6,6 +6,7 @@ using Cinemachine;
 using Fusion.KCC;
 using GamePlay;
 using Lobby;
+using Player;
 
 public class PlayerController : NetworkBehaviour
 {
@@ -16,6 +17,7 @@ public class PlayerController : NetworkBehaviour
     public PlayerAttackHandler AttackHandler => attackHandler;
     public PlayerAbilityHandler AbilityHandler => abilityHandler;
     public PlayerUIHandler UIHandler => uIHandler;
+    public PlayerAnimationController AnimationController => animationController;
 
     public Camera PlayerCamera => playerCamera;
 
@@ -25,13 +27,15 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private PlayerAttackHandler attackHandler = null;
     [SerializeField] private PlayerAbilityHandler abilityHandler = null;
     [SerializeField] private PlayerUIHandler uIHandler = null;
+    [SerializeField] private PlayerAnimationController animationController = null;
 
     [SerializeField] private Transform cameraFollow = null;
     [SerializeField] private Camera playerCamera = null;
     [SerializeField] private AudioListener audioListener = null;
     [SerializeField] private GameObject playerUi = null;
 
-    [Networked] public PlayerRef LastAttackPlayer { get; set; }
+    [Networked] public PlayerRef LastHitPlayer  { get; set; }
+    [Networked] public float LastHitTime        { get; set; }
     
     private void Awake()
     {
@@ -77,9 +81,16 @@ public class PlayerController : NetworkBehaviour
         if(transform.position.y <= -20f)
         {
             KCC.SetPosition(SpawnPointManager.Instance.GetRandomSpawnPoint(Runner.Simulation.Tick).position);
+            
+            if (Object.HasStateAuthority)
+            {
+                GameApp.Instance.GetPlayerNetworkData(Object.InputAuthority).DeathAmount++;
 
-            GameApp.Instance.GetPlayerNetworkData(Object.InputAuthority).DeathAmount++;
-            GameApp.Instance.GetPlayerNetworkData(LastAttackPlayer).KillAmount++;
+                if (Time.time - LastHitTime <= 10f)
+                {
+                    GameApp.Instance.GetPlayerNetworkData(LastHitPlayer).KillAmount++;
+                }
+            }
         }
     }
 }

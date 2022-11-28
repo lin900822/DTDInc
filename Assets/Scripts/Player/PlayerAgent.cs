@@ -52,6 +52,7 @@ public class PlayerAgent : Agent
 		}
 
 		playerController.AbilityHandler.ProcessInput();
+		playerController.AnimationController.ProcessInput(playerController);
 	}
 
     protected override void OnFixedUpdate()

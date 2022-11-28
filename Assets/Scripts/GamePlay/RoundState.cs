@@ -51,7 +51,7 @@ namespace GamePlay
 
         public override void OnLogic()
         {
-            
+            GameManager.Instance.GameUIManager.ShowMessage($"{RoundManager.TimerRemainingTime:0}");
         }
 
         public override void ExitState()
@@ -77,7 +77,7 @@ namespace GamePlay
 
         public override void OnLogic()
         {
-            if (Time.timeSinceLevelLoad - _enterTime >= 2f)
+            if (Time.timeSinceLevelLoad - _enterTime >= 2.5f)
             {
                 DetermineWinner();
                 _enterTime = 999999f;

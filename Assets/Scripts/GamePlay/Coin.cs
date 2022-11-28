@@ -11,6 +11,8 @@ namespace GamePlay
         [SerializeField] private float sceneRadius = 45f;
         [SerializeField] private float detectRadius = 1f;
 
+        [SerializeField] private NetworkTransform networkTransform = null;
+        
         [SerializeField] private LayerMask hitLayers = default;
 
         private PlayerController _playerController = null;
@@ -66,6 +68,8 @@ namespace GamePlay
         
         public override void Render()
         {
+            networkTransform.InterpolationTarget.Rotate(Vector3.up * Time.deltaTime * 50f);
+            
             if (_gameManager.RoundManager.Stage != RoundStage.InGame) return;
             
             FollowPlayer();
