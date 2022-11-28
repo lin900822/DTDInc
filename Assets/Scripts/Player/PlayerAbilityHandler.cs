@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using Fusion;
 using UnityEngine;
 
@@ -163,7 +164,7 @@ namespace Ability
         private static void OnAbilitySlotListChanged(Changed<PlayerAbilityHandler> changed)
         {
             changed.Behaviour.UpdateSlotsUI();
-            changed.Behaviour.UpdateCrosshair(changed.Behaviour.selectedAbilityIndex);
+            changed.Behaviour.UpdateAimBehaviour(changed.Behaviour.selectedAbilityIndex);
         }
 
         private void UpdateSlotsUI()
@@ -197,24 +198,37 @@ namespace Ability
 
         private static void OnSelectedAbilityIndexChanged(Changed<PlayerAbilityHandler> changed)
         {
-            changed.Behaviour.UpdateCrosshair(changed.Behaviour.selectedAbilityIndex);
+            changed.Behaviour.UpdateAimBehaviour(changed.Behaviour.selectedAbilityIndex);
         }
 
-        private void UpdateCrosshair(int index)
+        private void UpdateAimBehaviour(int index)
         {
             string selectedAbilityName = abilitySlotsList[selectedAbilityIndex].AbilityName.ToString();
             Ability abilitySelected = abilityDatabase.GetAbilityByName(selectedAbilityName);
 
+            var playerCamera = playerController.PlayerCamera;
+            
             if (abilitySelected == null)
             {
                 playerController.UIHandler.SetAimCrosshair(false);
 
+                DOTween.To(() => playerCamera.fieldOfView, x => playerCamera.fieldOfView = x, 60f, 0.3f).SetEase(Ease.OutQuart);
+                
                 return;
             }
 
             bool canAim = abilitySelected.CanAim;
 
             playerController.UIHandler.SetAimCrosshair(canAim);
+            
+            if (canAim)
+            {
+                DOTween.To(() => playerCamera.fieldOfView, x => playerCamera.fieldOfView = x, 35f, 0.3f).SetEase(Ease.OutQuart);
+            }
+            else
+            {
+                DOTween.To(() => playerCamera.fieldOfView, x => playerCamera.fieldOfView = x, 60f, 0.3f).SetEase(Ease.OutQuart);
+            }
         }
     }
 
