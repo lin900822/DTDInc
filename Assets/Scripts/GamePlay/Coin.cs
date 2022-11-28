@@ -12,6 +12,7 @@ namespace GamePlay
         [SerializeField] private float detectRadius = 1f;
 
         [SerializeField] private NetworkTransform networkTransform = null;
+        [SerializeField] private GameObject effect = null;
         
         [SerializeField] private LayerMask hitLayers = default;
 
@@ -19,7 +20,7 @@ namespace GamePlay
 
         private readonly List<LagCompensatedHit> _hits = new List<LagCompensatedHit>();
 
-        [Networked] public NetworkBehaviourId OwnerId   { get; set; }
+        [Networked(OnChanged = nameof(OnPlayerIdChanged))] public NetworkBehaviourId OwnerId   { get; set; }
         [Networked] public PlayerRef OwnerPlayerRef     { get; set; }
 
         private GameManager _gameManager = null;
@@ -31,7 +32,7 @@ namespace GamePlay
 
         public override void FixedUpdateNetwork()
         {
-            if (_gameManager.RoundManager.Stage != RoundStage.InGame) return;
+            if (_gameManager.RoundManager.Stage == RoundStage.Ready) return;
             
             DetectPlayer();
             
@@ -70,7 +71,7 @@ namespace GamePlay
         {
             networkTransform.InterpolationTarget.Rotate(Vector3.up * Time.deltaTime * 50f);
             
-            if (_gameManager.RoundManager.Stage != RoundStage.InGame) return;
+            if (_gameManager.RoundManager.Stage == RoundStage.Ready) return;
             
             FollowPlayer();
         }
@@ -80,7 +81,7 @@ namespace GamePlay
             if (_playerController == null) return;
             if (OwnerId == NetworkBehaviourId.None) return;
             
-            transform.position = _playerController.transform.position + new Vector3(0, 2f, 0);
+            transform.position = _playerController.transform.position + new Vector3(0, 3.5f, 0);
         }
 
         public void ResetCoin()
@@ -103,7 +104,12 @@ namespace GamePlay
             } 
             while ((randomX * randomX + randomZ * randomZ) > sceneRadius * sceneRadius);
             
-            transform.position = new Vector3(randomX, 2, randomZ);
+            transform.position = new Vector3(randomX, 1.5f, randomZ);
+        }
+
+        private static void OnPlayerIdChanged(Changed<Coin> changed)
+        {
+            changed.Behaviour.effect.SetActive(changed.Behaviour.OwnerId == default);
         }
     }
 }
