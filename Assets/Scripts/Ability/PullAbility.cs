@@ -32,6 +32,7 @@ namespace Ability
                     pullDirection.y += .1f;
 
                     hitPlayer.KCC.AddExternalImpulse(pullDirection * impulseMagnitude);
+                    hitPlayer.LastAttackPlayer = Object.InputAuthority;
                 }
             }
         }

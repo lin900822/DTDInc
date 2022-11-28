@@ -72,8 +72,10 @@ namespace GamePlay
         public void RecoverAllCubes()
         {
             if (!Object.HasStateAuthority) return;
-            
-            RecoverCubes(_destroyedCubesIndex.Count);
+
+            _destroyedCubesIndex.Clear();
+
+            RecoverAllCubes_RPC();
         }
 
         // RPCs
@@ -112,13 +114,22 @@ namespace GamePlay
         }
 
         [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-        private void RecoverCubes_RPC(int[] indexs)
+        private void RecoverCubes_RPC(int[] indexes)
         {
-            foreach (var index in indexs)
+            foreach (var index in indexes)
             {
                 if (index < 0 || index >= cubes.Length) return;
 
                 cubes[index].SetActive(true);
+            }
+        }
+        
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+        private void RecoverAllCubes_RPC()
+        {
+            foreach (var cube in cubes)
+            {
+                cube.SetActive(true);
             }
         }
 

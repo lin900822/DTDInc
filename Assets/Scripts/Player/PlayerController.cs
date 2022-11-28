@@ -31,6 +31,8 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private AudioListener audioListener = null;
     [SerializeField] private GameObject playerUi = null;
 
+    [Networked] public PlayerRef LastAttackPlayer { get; set; }
+    
     private void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -48,6 +50,7 @@ public class PlayerController : NetworkBehaviour
     {
         if (Object.HasInputAuthority)
         {
+            
         }
         else
         {
@@ -61,7 +64,7 @@ public class PlayerController : NetworkBehaviour
     {
         var playerName = GameApp.Instance.GetPlayerNetworkData(Object.InputAuthority).PlayerName;
 
-        uIHandler.SetPlayerName(playerName);
+        uIHandler.SetPlayerName(!Object.HasInputAuthority ? playerName : "");
     }
 
     public override void Despawned(NetworkRunner runner, bool hasState)
@@ -74,6 +77,9 @@ public class PlayerController : NetworkBehaviour
         if(transform.position.y <= -20f)
         {
             KCC.SetPosition(SpawnPointManager.Instance.GetRandomSpawnPoint(Runner.Simulation.Tick).position);
+
+            GameApp.Instance.GetPlayerNetworkData(Object.InputAuthority).DeathAmount++;
+            GameApp.Instance.GetPlayerNetworkData(LastAttackPlayer).KillAmount++;
         }
     }
 }

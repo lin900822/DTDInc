@@ -21,6 +21,7 @@ namespace Ability
                 playerController.KCC.AddModifier(teleportKCCProcessor);
 
                 hitPlayer.KCC.SetPosition(currentPosition);
+                hitPlayer.LastAttackPlayer = Object.InputAuthority;
 
                 if (Object.HasInputAuthority)
                     PlayEffect_RPC(currentPosition);
