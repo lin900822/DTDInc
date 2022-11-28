@@ -13,7 +13,7 @@ namespace Ability
 
         [SerializeField] private LayerMask affectLayerMask = default;
 
-        private readonly Collider[] _hitColliders = new Collider[1000];
+        private readonly Collider[] _hitColliders = new Collider[350];
         private readonly List<int> _hitCubesIndex = new List<int>();
 
         private Vector3 _destroyCenter;
@@ -40,6 +40,11 @@ namespace Ability
         {
             _hitCubesIndex.Clear();
 
+            for (int i = 0; i < _hitColliders.Length; i++)
+            {
+                _hitColliders[i] = null;
+            }
+
             Physics.OverlapBoxNonAlloc(_destroyCenter, destroyBound, _hitColliders, _destroyRotation, affectLayerMask);
 
             foreach (var collider in _hitColliders)
@@ -51,8 +56,9 @@ namespace Ability
                     _hitCubesIndex.Add(cube.Index);
                 }
             }
-
-            GameManager.Instance.FloorManager.DestroyCubes_RPC(_hitCubesIndex.ToArray());
+            print(_hitCubesIndex.Count);
+            
+            GameManager.Instance.FloorManager.DestroyCubes(_hitCubesIndex.ToArray());
         }
         
         [Rpc(RpcSources.StateAuthority, RpcTargets.All)]

@@ -19,6 +19,9 @@ namespace GamePlay
 
         private readonly List<int> _cubesToRecover = new List<int>();
 
+        private readonly Queue<int> _batchDestroyCubesIndexBuffer = new Queue<int>();
+        private readonly List<int> _batchDestroyCubesIndex = new List<int>();
+
         private void Start()
         {
             _gameManager = GameManager.Instance;
@@ -26,14 +29,20 @@ namespace GamePlay
 
         public override void FixedUpdateNetwork()
         {
-            AutoRecoverCubes();
+            if (RecoverCubesTimer.ExpiredOrNotRunning(Runner))
+            {
+                AutoRecoverCubes();
+            }
+            else
+            {
+                BatchDestroyCubes();
+            }
         }
-
+        
         private void AutoRecoverCubes()
         {
             if (!Object.HasStateAuthority) return;
-            if (!RecoverCubesTimer.ExpiredOrNotRunning(Runner)) return;
-        
+            
             RecoverCubesTimer = TickTimer.CreateFromSeconds(Runner, timeToRecoverCubes);
 
             var recoverAmount = (int)Random.Range(recoverAmountRange.x, recoverAmountRange.y);
@@ -41,6 +50,17 @@ namespace GamePlay
             RecoverCubes(recoverAmount);
         }
 
+        public int GetCubeIndex(GameObject cubeObj)
+        {
+            for(int i = 0; i < cubes.Length; i++)
+            {
+                if (cubeObj == cubes[i])
+                    return i;
+            }
+
+            return -1;
+        }
+        
         private void RecoverCubes(int recoverAmount)
         {
             if (!Object.HasStateAuthority) return;
@@ -58,17 +78,6 @@ namespace GamePlay
             RecoverCubes_RPC(_cubesToRecover.ToArray());
         }
 
-        public int GetCubeIndex(GameObject cubeObj)
-        {
-            for(int i = 0; i < cubes.Length; i++)
-            {
-                if (cubeObj == cubes[i])
-                    return i;
-            }
-
-            return -1;
-        }
-
         public void RecoverAllCubes()
         {
             if (!Object.HasStateAuthority) return;
@@ -76,6 +85,30 @@ namespace GamePlay
             _destroyedCubesIndex.Clear();
 
             RecoverAllCubes_RPC();
+        }
+
+        public void DestroyCubes(int[] indexes)
+        {
+            foreach (var t in indexes)
+            {
+                _batchDestroyCubesIndexBuffer.Enqueue(t);
+            }
+        }
+        
+        private void BatchDestroyCubes()
+        {
+            if (!Object.HasStateAuthority) return;
+            
+            _batchDestroyCubesIndex.Clear();
+            
+            for (int i = 0; i < 10; i++)
+            {
+                if(_batchDestroyCubesIndexBuffer.Count <= 0) break;
+                    
+                _batchDestroyCubesIndex.Add(_batchDestroyCubesIndexBuffer.Dequeue());
+            }
+                
+            DestroyCubes_RPC(_batchDestroyCubesIndex.ToArray());
         }
 
         // RPCs

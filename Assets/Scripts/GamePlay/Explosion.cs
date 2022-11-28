@@ -15,7 +15,7 @@ namespace GamePlay
         
         [SerializeField] private LayerMask affectLayerMask = default;
 
-        private readonly Collider[] _hitColliders = new Collider[1000];
+        private readonly Collider[] _hitColliders = new Collider[350];
         private readonly List<int> _hitCubesIndex = new List<int>();
 
         [Networked] private TickTimer LifeTimer     { get; set; }
@@ -52,6 +52,11 @@ namespace GamePlay
             
             _hitCubesIndex.Clear();
 
+            for (int i = 0; i < _hitColliders.Length; i++)
+            {
+                _hitColliders[i] = null;
+            }
+            
             Physics.OverlapSphereNonAlloc(transform.position, radius, _hitColliders, affectLayerMask);
 
             foreach (var collider in _hitColliders)
@@ -64,7 +69,9 @@ namespace GamePlay
                 }
             }
 
-            GameManager.Instance.FloorManager.DestroyCubes_RPC(_hitCubesIndex.ToArray());
+            print(_hitCubesIndex.Count);
+            
+            GameManager.Instance.FloorManager.DestroyCubes(_hitCubesIndex.ToArray());
         }
     }
 }
