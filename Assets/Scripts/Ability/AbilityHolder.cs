@@ -6,7 +6,7 @@ namespace Ability
     public class AbilityHolder : NetworkBehaviour
     {
         private Ability ability = null;
-
+        
         public bool IsBusy => abilityState != AbilityState.Ready;
 
         [Networked] private AbilityState abilityState { get; set; } = AbilityState.Ready;
