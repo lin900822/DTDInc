@@ -51,11 +51,13 @@ namespace GamePlay
 
         public override void OnLogic()
         {
-            GameManager.Instance.GameUIManager.ShowMessage($"{RoundManager.TimerRemainingTime:0}");
+            GameManager.Instance.GameUIManager.UpdateTimer(RoundManager.TimerRemainingTime);
         }
 
         public override void ExitState()
         {
+            GameManager.Instance.GameUIManager.UpdateTimer(0f);
+            
             RoundManager.EndInGame();
         }
     }

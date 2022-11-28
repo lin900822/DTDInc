@@ -223,7 +223,7 @@ namespace Ability
             
             if (canAim)
             {
-                DOTween.To(() => playerCamera.fieldOfView, x => playerCamera.fieldOfView = x, 35f, 0.3f).SetEase(Ease.OutQuart);
+                DOTween.To(() => playerCamera.fieldOfView, x => playerCamera.fieldOfView = x, 55f, 0.3f).SetEase(Ease.OutQuart);
             }
             else
             {

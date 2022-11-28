@@ -554,7 +554,7 @@ MonoBehaviour:
   _interpolationDataSource: 0
   _InputBlocked:
     _value: 0
-  mouseSensitivity: 10
+  mouseSensitivity: 3
   mouseScrollSensitivity: 30
 --- !u!114 &8625511127229478083
 MonoBehaviour:
@@ -2455,7 +2455,7 @@ MonoBehaviour:
   PrepareTime: 0
   ExcuteTime: 3
   CleanUpTime: 0
-  range: 22
+  range: 12
   effect: {fileID: 2654338155471871848, guid: 2056340845ab32146abe51efe08318af, type: 3}
   cameraEffect: {fileID: 1304283833500844029, guid: a500dd1a32daac74da08a78a0980e27c,
     type: 3}
@@ -2553,7 +2553,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0.05270481, a: 1}
+  m_Color: {r: 0, g: 0.9529412, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

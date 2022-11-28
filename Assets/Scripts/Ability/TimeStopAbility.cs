@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
 
@@ -59,6 +60,12 @@ namespace Ability
         private void PlayEffect_RPC()
         {
             Instantiate(effect, transform.position, transform.rotation);
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(transform.position, range);
         }
     }
 }
