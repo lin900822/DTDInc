@@ -17,7 +17,8 @@ namespace GamePlay
 
         private readonly List<LagCompensatedHit> _hits = new List<LagCompensatedHit>();
 
-        [Networked] public NetworkBehaviourId OwnerId { get; set; }
+        [Networked] public NetworkBehaviourId OwnerId   { get; set; }
+        [Networked] public PlayerRef OwnerPlayerRef     { get; set; }
 
         private GameManager _gameManager = null;
 
@@ -56,13 +57,11 @@ namespace GamePlay
 
             Runner.LagCompensation.OverlapSphere(transform.position, detectRadius, Object.InputAuthority, _hits, hitLayers, HitOptions.None);
 
-            if (_hits.Count > 0)
-            {
-                if (_hits[0].GameObject.TryGetComponent<PlayerController>(out var obj))
-                {
-                    OwnerId = obj.Id;
-                }
-            }
+            if (_hits.Count <= 0) return;
+            if (!_hits[0].GameObject.TryGetComponent<PlayerController>(out var obj)) return;
+            
+            OwnerId = obj.Id;
+            OwnerPlayerRef = obj.Object.InputAuthority;
         }
         
         public override void Render()
@@ -74,10 +73,10 @@ namespace GamePlay
 
         private void FollowPlayer()
         {
-            if (_playerController != null)
-            {
-                transform.position = _playerController.transform.position + new Vector3(0, 2f, 0);
-            }
+            if (_playerController == null) return;
+            if (OwnerId == NetworkBehaviourId.None) return;
+            
+            transform.position = _playerController.transform.position + new Vector3(0, 2f, 0);
         }
 
         public void ResetCoin()
@@ -87,6 +86,7 @@ namespace GamePlay
             _hits.Clear();
             
             OwnerId = NetworkBehaviourId.None;
+            OwnerPlayerRef = default;
             _playerController = null;
 
             float randomX;

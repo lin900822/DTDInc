@@ -92,15 +92,12 @@ namespace GamePlay
         private void DetermineWinner()
         {
             var gameManager = GameManager.Instance;
-            var gameApp = GameApp.Instance;
 
-            var winnerId = gameManager.Coin.OwnerId;
+            var winnerPlayerRef = gameManager.Coin.OwnerPlayerRef;
 
-            var winnerPlayer = gameApp.Runner.TryFindBehaviour<PlayerController>(winnerId, out PlayerController playerController) ? playerController : null;
-
-            if (winnerPlayer != null)
+            if (winnerPlayerRef != default)
             {
-                var winnerData = GameApp.Instance.GetPlayerNetworkData(winnerPlayer.Object.InputAuthority);
+                var winnerData = GameApp.Instance.GetPlayerNetworkData(winnerPlayerRef);
 
                 var winnerName = winnerData.PlayerName;
             
