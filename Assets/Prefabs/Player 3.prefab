@@ -205,7 +205,7 @@ PrefabInstance:
     - target: {fileID: 8707098849677251420, guid: e03b2e58156e230419f10e0ee5d5cccf,
         type: 3}
       propertyPath: NetworkedBehaviours.Array.size
-      value: 14
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 8707098849677251420, guid: e03b2e58156e230419f10e0ee5d5cccf,
         type: 3}
@@ -232,6 +232,16 @@ PrefabInstance:
       propertyPath: NetworkedBehaviours.Array.data[13]
       value: 
       objectReference: {fileID: 3196274369158297339}
+    - target: {fileID: 8707098849677251420, guid: e03b2e58156e230419f10e0ee5d5cccf,
+        type: 3}
+      propertyPath: NetworkedBehaviours.Array.data[14]
+      value: 
+      objectReference: {fileID: 6435247368498044604}
+    - target: {fileID: 8707098849677251420, guid: e03b2e58156e230419f10e0ee5d5cccf,
+        type: 3}
+      propertyPath: NetworkedBehaviours.Array.data[15]
+      value: 
+      objectReference: {fileID: 6459824414772092355}
     - target: {fileID: 8707098849677251420, guid: e03b2e58156e230419f10e0ee5d5cccf,
         type: 3}
       propertyPath: NetworkGuid.RawGuidValue.Array.data[0]
@@ -304,6 +314,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9e8a3f924c9647340b85f28827d950b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6435247368498044604 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 489934240046787640, guid: e03b2e58156e230419f10e0ee5d5cccf,
+    type: 3}
+  m_PrefabInstance: {fileID: 6882080749480964740}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfed24ea516b418691c289af442e3323, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6459824414772092355 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 443578101830463303, guid: e03b2e58156e230419f10e0ee5d5cccf,
+    type: 3}
+  m_PrefabInstance: {fileID: 6882080749480964740}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b4a859bb45f4515832bbc9b03f9fb32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &8456694078698172989 stripped

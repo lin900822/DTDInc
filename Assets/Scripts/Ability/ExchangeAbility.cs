@@ -7,6 +7,7 @@ namespace Ability
     public class ExchangeAbility : Ability
     {
         [SerializeField] private GameObject effect = null;
+        [SerializeField] private GameObject cameraEffect = null;
         [SerializeField] private TeleportKCCProcessor teleportKCCProcessor = null;
 
         public override void OnExecute()
@@ -25,7 +26,10 @@ namespace Ability
                 hitPlayer.LastHitTime = Time.time;
 
                 if (Object.HasInputAuthority)
+                {
                     PlayEffect_RPC(currentPosition);
+                    Instantiate(cameraEffect, playerController.PlayerCamera.transform);
+                }
             }
         }
 
