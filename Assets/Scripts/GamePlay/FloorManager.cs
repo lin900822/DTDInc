@@ -15,13 +15,14 @@ namespace GamePlay
 
         private GameManager _gameManager = null;
     
-        private readonly Queue<int> _destroyedCubesIndex = new Queue<int>();
+        private readonly Queue<short> _destroyedCubesIndex = new Queue<short>();
 
-        private readonly List<int> _cubesToRecover = new List<int>();
+        private readonly List<short> _cubesToRecover = new List<short>();
 
-        private readonly Queue<int> _batchDestroyCubesIndexBuffer = new Queue<int>();
-        private readonly List<int> _batchDestroyCubesIndex = new List<int>();
+        private readonly Queue<short> _batchDestroyCubesIndexBuffer = new Queue<short>();
+        private readonly List<short> _batchDestroyCubesIndex = new List<short>();
 
+        
         private void Start()
         {
             _gameManager = GameManager.Instance;
@@ -50,12 +51,12 @@ namespace GamePlay
             RecoverCubes(recoverAmount);
         }
 
-        public int GetCubeIndex(GameObject cubeObj)
+        public short GetCubeIndex(GameObject cubeObj)
         {
             for(int i = 0; i < cubes.Length; i++)
             {
                 if (cubeObj == cubes[i])
-                    return i;
+                    return (short)i;
             }
 
             return -1;
@@ -87,7 +88,7 @@ namespace GamePlay
             RecoverAllCubes_RPC();
         }
 
-        public void DestroyCubes(int[] indexes)
+        public void DestroyCubes(short[] indexes)
         {
             foreach (var t in indexes)
             {
@@ -101,7 +102,7 @@ namespace GamePlay
             
             _batchDestroyCubesIndex.Clear();
             
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 30; i++)
             {
                 if(_batchDestroyCubesIndexBuffer.Count <= 0) break;
                     
@@ -114,7 +115,7 @@ namespace GamePlay
         // RPCs
     
         [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-        public void DestroyOneCube_RPC(int index)
+        public void DestroyOneCube_RPC(short index)
         {
             if(_gameManager.RoundManager.Stage != RoundStage.InGame) return;
         
@@ -129,7 +130,7 @@ namespace GamePlay
         }
 
         [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-        public void DestroyCubes_RPC(int[] indexes)
+        public void DestroyCubes_RPC(short[] indexes)
         {
             if(_gameManager.RoundManager.Stage != RoundStage.InGame) return;
         
@@ -147,7 +148,7 @@ namespace GamePlay
         }
 
         [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-        private void RecoverCubes_RPC(int[] indexes)
+        private void RecoverCubes_RPC(short[] indexes)
         {
             foreach (var index in indexes)
             {
@@ -170,7 +171,7 @@ namespace GamePlay
         [ContextMenu("AddCube")]
         public void AddCube()
         {
-            int i = 0;
+            short i = 0;
 
             foreach(Transform child in transform)
             {

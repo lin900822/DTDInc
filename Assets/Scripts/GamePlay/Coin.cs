@@ -38,6 +38,12 @@ namespace GamePlay
             
             _playerController = Runner.TryFindBehaviour(OwnerId, out PlayerController obj) ? obj : null;
 
+            if (OwnerPlayerRef != default)
+            {
+                var playerData = GameApp.Instance.GetPlayerNetworkData(OwnerPlayerRef);
+                playerData.KeepCoinTime += Runner.DeltaTime;
+            }
+            
             FollowPlayer();
 
             DetectIfIsOutOfBound();

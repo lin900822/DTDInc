@@ -27,7 +27,7 @@ public class PlayerAttackHandler : NetworkBehaviour
             - 1))
         {
             var floorManager = GameManager.Instance.FloorManager;
-            int hitCubeIndex = floorManager.GetCubeIndex(hit.collider.gameObject);
+            short hitCubeIndex = floorManager.GetCubeIndex(hit.collider.gameObject);
             floorManager.DestroyOneCube_RPC(hitCubeIndex);
         }
     }

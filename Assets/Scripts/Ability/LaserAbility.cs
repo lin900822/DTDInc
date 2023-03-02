@@ -14,7 +14,7 @@ namespace Ability
         [SerializeField] private LayerMask affectLayerMask = default;
 
         private readonly Collider[] _hitColliders = new Collider[350];
-        private readonly List<int> _hitCubesIndex = new List<int>();
+        private readonly List<short> _hitCubesIndex = new List<short>();
 
         private Vector3 _destroyCenter;
         private Quaternion _destroyRotation;

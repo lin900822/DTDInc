@@ -12,6 +12,8 @@ public class PlayerNetworkData : NetworkBehaviour
 
     [Networked] public int KillAmount { get; set; }
     [Networked] public int DeathAmount { get; set; }
+    
+    [Networked] public float KeepCoinTime { get; set; }
 
     private GameApp _gameApp = null;
     

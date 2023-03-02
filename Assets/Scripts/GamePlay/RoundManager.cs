@@ -37,14 +37,14 @@ namespace GamePlay
 
         public override void Spawned()
         {
-            SwitchStage();
+            SwitchToNextStage();
         }
 
         public override void FixedUpdateNetwork()
         {
             if (RoundTimer.Expired(Runner))
             {
-                SwitchStage();
+                SwitchToNextStage();
             }
 
             DoStateLogic();
@@ -58,7 +58,7 @@ namespace GamePlay
             }
         }
 
-        private void SwitchStage()
+        private void SwitchToNextStage()
         {
             switch (Stage)
             {

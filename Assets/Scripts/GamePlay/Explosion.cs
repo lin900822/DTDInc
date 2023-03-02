@@ -16,7 +16,7 @@ namespace GamePlay
         [SerializeField] private LayerMask affectLayerMask = default;
 
         private readonly Collider[] _hitColliders = new Collider[350];
-        private readonly List<int> _hitCubesIndex = new List<int>();
+        private readonly List<short> _hitCubesIndex = new List<short>();
 
         [Networked] private TickTimer LifeTimer     { get; set; }
         [Networked] private TickTimer PrepareTimer  { get; set; }

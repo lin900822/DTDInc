@@ -4,6 +4,6 @@ namespace GamePlay
 {
     public class Cube : MonoBehaviour
     {
-        public int Index;
+        public short Index;
     }
 }

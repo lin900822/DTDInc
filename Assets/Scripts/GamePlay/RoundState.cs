@@ -93,22 +93,21 @@ namespace GamePlay
 
         private void DetermineWinner()
         {
-            var gameManager = GameManager.Instance;
+            PlayerNetworkData winnerPlayerData = null;
 
-            var winnerPlayerRef = gameManager.Coin.OwnerPlayerRef;
-
-            if (winnerPlayerRef != default)
+            float longestKeepTime = -1f;
+            foreach (var data in GameApp.Instance.PlayerNetworkDataList)
             {
-                var winnerData = GameApp.Instance.GetPlayerNetworkData(winnerPlayerRef);
+                if (data.Value.KeepCoinTime > longestKeepTime)
+                {
+                    winnerPlayerData = data.Value;
+                    longestKeepTime = data.Value.KeepCoinTime;
+                }
+            }
 
-                var winnerName = winnerData.PlayerName;
+            var winnerName = winnerPlayerData.PlayerName;
             
-                GameManager.Instance.GameUIManager.ShowMessage($"{winnerName} has won the Game !");
-            }
-            else
-            {
-                GameManager.Instance.GameUIManager.ShowMessage($"There is no winner !");
-            }
+            GameManager.Instance.GameUIManager.ShowMessage($"{winnerName} has won the Game !");
         }
     }
 }

@@ -23,7 +23,7 @@ namespace Ability
 
                 hitPlayer.KCC.SetPosition(currentPosition);
                 hitPlayer.LastHitPlayer = Object.InputAuthority;
-                hitPlayer.LastHitTime = Time.time;
+                hitPlayer.LastGotHitTime = Time.time;
 
                 if (Object.HasInputAuthority)
                 {
