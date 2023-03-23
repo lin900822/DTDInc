@@ -18,6 +18,7 @@ public class PlayerController : NetworkBehaviour
     public PlayerAbilityHandler AbilityHandler => abilityHandler;
     public PlayerUIHandler UIHandler => uIHandler;
     public PlayerAnimationController AnimationController => animationController;
+    public PlayerCameraHandler CameraHandler => cameraHandler;
 
     public Camera PlayerCamera => playerCamera;
 
@@ -28,6 +29,7 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private PlayerAbilityHandler abilityHandler = null;
     [SerializeField] private PlayerUIHandler uIHandler = null;
     [SerializeField] private PlayerAnimationController animationController = null;
+    [SerializeField] private PlayerCameraHandler cameraHandler = null;
 
     [SerializeField] private Transform cameraFollow = null;
     [SerializeField] private Camera playerCamera = null;
@@ -48,6 +50,8 @@ public class PlayerController : NetworkBehaviour
         SetLocalComponents();
 
         SetPlayerName();
+        
+        
     }
 
     private void SetLocalComponents()

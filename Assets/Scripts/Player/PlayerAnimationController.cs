@@ -11,6 +11,7 @@ namespace Player
 
         private bool _isWalking = false;
         private bool _isAir = false;
+        private bool wasAirLastFrame = false;
         
         private readonly int _xInput = Animator.StringToHash("XInput");
         private readonly int _yInput = Animator.StringToHash("YInput");
@@ -23,14 +24,27 @@ namespace Player
             playerAnimator.SetFloat(_yInput, playerController.Input.FixedInput.MoveDirection.y);
 
             _isAir = !playerController.KCC.Data.IsGrounded;
+            wasAirLastFrame = !playerController.KCC.Data.WasGrounded;
             playerAnimator.SetBool(_isAirHash, _isAir);
             
             _isWalking = playerController.KCC.Data.RealVelocity.magnitude >= .1f && !_isAir;
             playerAnimator.SetBool(_isWalkingHash, _isWalking);
+            
 
             if (playerController.Input.WasPressed(InputButtons.Fire))
             {
                 networkAnimator.SetTrigger("Attack");
+            }
+
+            if (playerController.HasInputAuthority && playerController.Runner.IsForward)
+            {
+                playerController.CameraHandler.SetWalking(_isWalking);
+            
+                if (wasAirLastFrame && !_isAir)
+                {
+                    playerController.CameraHandler.PlayLandAnimation();
+                    print(GameApp.Instance.Runner.Tick);
+                }
             }
         }
     }

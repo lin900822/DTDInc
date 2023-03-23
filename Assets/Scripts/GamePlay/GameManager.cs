@@ -68,6 +68,7 @@ namespace GamePlay
             {
                 data.Value.KillAmount = 0;
                 data.Value.DeathAmount = 0;
+                data.Value.KeepCoinTime = 0;
             }
 
             var players = playerSpawner.PlayerList;
