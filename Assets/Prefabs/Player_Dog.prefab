@@ -114,8 +114,8 @@ MonoBehaviour:
     _value: 0
     _inverse: 0
     _hash: -814817977
-  StateHashes: 00000000b79008a975e2c90bf383d5d38e8fea186bd5a32d398fdc043b52f590265532d7
-  TriggerHashes: 000000000d286c40
+  StateHashes: 00000000b79008a975e2c90bf383d5d38e8fea186bd5a32d398fdc043b52f590265532d7ac28f55db6b9cfb7
+  TriggerHashes: 000000000d286c406b7c8c8a
 --- !u!1001 &3313967496064160987
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -188,6 +188,66 @@ PrefabInstance:
       propertyPath: animationController
       value: 
       objectReference: {fileID: 999750836932258563}
+    - target: {fileID: 4435733352329990859, guid: e03b2e58156e230419f10e0ee5d5cccf,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4435733352329990859, guid: e03b2e58156e230419f10e0ee5d5cccf,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4435733352329990859, guid: e03b2e58156e230419f10e0ee5d5cccf,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4435733352329990859, guid: e03b2e58156e230419f10e0ee5d5cccf,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6398509806795753301, guid: e03b2e58156e230419f10e0ee5d5cccf,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6398509806795753301, guid: e03b2e58156e230419f10e0ee5d5cccf,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6398509806795753301, guid: e03b2e58156e230419f10e0ee5d5cccf,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6398509806795753301, guid: e03b2e58156e230419f10e0ee5d5cccf,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8214262143798657289, guid: e03b2e58156e230419f10e0ee5d5cccf,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8214262143798657289, guid: e03b2e58156e230419f10e0ee5d5cccf,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8214262143798657289, guid: e03b2e58156e230419f10e0ee5d5cccf,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8214262143798657289, guid: e03b2e58156e230419f10e0ee5d5cccf,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8707098849677251420, guid: e03b2e58156e230419f10e0ee5d5cccf,
         type: 3}
       propertyPath: NetworkedBehaviours.Array.size

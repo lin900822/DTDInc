@@ -30,23 +30,27 @@ namespace Player
             _isWalking = playerController.KCC.Data.RealVelocity.magnitude >= .1f && !_isAir;
             playerAnimator.SetBool(_isWalkingHash, _isWalking);
 
-
-            if (playerController.Input.WasPressed(InputButtons.Fire))
+            
+            if (playerController.Runner.IsForward)
             {
-                networkAnimator.SetTrigger("Attack");
-            }
-            else if (playerController.Input.WasPressed(InputButtons.UseAbility))
-            {
-                networkAnimator.SetTrigger("UseAbility");
-            }
-
-            if (playerController.HasInputAuthority && playerController.Runner.IsForward)
-            {
-                playerController.CameraHandler.SetWalkingAnimation(_isWalking);
-
-                if (wasAirLastFrame && !_isAir)
+                if (playerController.Input.WasPressed(InputButtons.Fire))
                 {
-                    playerController.CameraHandler.TriggerLandAnimation();
+                    networkAnimator.SetTrigger("Attack", true);
+                }
+
+                if (playerController.Input.WasPressed(InputButtons.UseAbility))
+                {
+                    networkAnimator.SetTrigger("UseAbility", true);
+                }
+
+                if (playerController.HasInputAuthority)
+                {
+                    playerController.CameraHandler.SetWalkingAnimation(_isWalking);
+
+                    if (wasAirLastFrame && !_isAir)
+                    {
+                        playerController.CameraHandler.TriggerLandAnimation();
+                    }
                 }
             }
         }

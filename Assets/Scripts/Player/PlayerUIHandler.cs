@@ -22,11 +22,13 @@ public class PlayerUIHandler : MonoBehaviour
         {
             if (i == selectedIndex)
             {
-                abilitySlotImgs[i].color = new Color(.75f, .75f, .75f);
+                abilityIconImgs[i].color = new Color(1f, 1f, 1f);
+                abilitySlotImgs[i].enabled = true;
             }
             else
             {
-                abilitySlotImgs[i].color = new Color(.5f, .5f, .5f, .5f);
+                abilityIconImgs[i].color = new Color(.5f, .5f, .5f, .5f);
+                abilitySlotImgs[i].enabled = false;
             }
         }
     }
@@ -35,7 +37,7 @@ public class PlayerUIHandler : MonoBehaviour
     {
         for (int i = 0; i < abilityAmountTxt.Length; i++)
         {
-            abilityAmountTxt[i].text = abilities[i].Amount.ToString();
+            abilityAmountTxt[i].text = abilities[i].Amount == 0 ? "" : abilities[i].Amount.ToString();
             abilityIconImgs[i].sprite = abilities[i].Icon;
 
             if(abilities[i].Amount > 0)
@@ -70,7 +72,7 @@ public class PlayerUIHandler : MonoBehaviour
 public struct AbilitySlotUIInfo
 {
     public string Name;
-    public string Desciption;
+    public string Description;
     public Sprite Icon;
 
     public int Amount;

@@ -41,7 +41,24 @@ namespace GamePlay
             if (OwnerPlayerRef != default)
             {
                 var playerData = GameApp.Instance.GetPlayerNetworkData(OwnerPlayerRef);
-                playerData.KeepCoinTime += Runner.DeltaTime;
+
+                float weight = 1f;
+                float roundRemainTime = GameManager.Instance.RoundManager.TimerRemainingTime;
+
+                if (roundRemainTime <= 30f)
+                    weight = 1.25f;
+                else if (roundRemainTime <= 25f)
+                    weight = 1.5f;
+                else if (roundRemainTime <= 20f)
+                    weight = 1.75f;
+                else if (roundRemainTime <= 15f)
+                    weight = 2f;
+                else if (roundRemainTime <= 10f)
+                    weight = 2.5f;
+                else if (roundRemainTime <= 1f)
+                    weight = 10f;
+                
+                playerData.KeepCoinTime += Runner.DeltaTime * weight;
             }
             
             FollowPlayer();
@@ -103,12 +120,16 @@ namespace GamePlay
             float randomX;
             float randomZ;
 
+            bool isGrounded;
+
             do
             {
                 randomX = Random.Range(-sceneRadius, sceneRadius);
                 randomZ = Random.Range(-sceneRadius, sceneRadius);
+
+                isGrounded = Physics.Raycast(new Vector3(randomX, 1, randomZ), Vector3.down, Mathf.Infinity);
             } 
-            while ((randomX * randomX + randomZ * randomZ) > sceneRadius * sceneRadius);
+            while ((randomX * randomX + randomZ * randomZ) > sceneRadius * sceneRadius || !isGrounded);
             
             transform.position = new Vector3(randomX, 1.5f, randomZ);
         }
