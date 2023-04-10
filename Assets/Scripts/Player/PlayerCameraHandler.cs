@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using SO;
+using UnityEngine;
 
 namespace Player
 {
@@ -6,14 +7,19 @@ namespace Player
     {
         [SerializeField] private Animator cameraAnimator = null;
 
-        public void SetWalking(bool isWalking)
+        [SerializeField] private CameraShake cameraShake = null;
+
+        [SerializeField] private CameraShakeSO cameraShakeSo = null;
+
+        public void SetWalkingAnimation(bool isWalking)
         {
             cameraAnimator.SetBool("isWalking", isWalking);
         }
 
-        public void PlayLandAnimation()
+        public void TriggerLandAnimation()
         {
             cameraAnimator.SetTrigger("onLand");
+            cameraShake.ShakeCamera(cameraShakeSo.LandShake.x, cameraShakeSo.LandShake.y);
         }
     }
 }

@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+using Ability;
 using DG.Tweening;
 using Fusion;
 using UnityEngine;
 
-namespace Ability
+namespace Player
 {
     public class PlayerAbilityHandler : NetworkBehaviour
     {
@@ -133,7 +132,7 @@ namespace Ability
         private void ActiveSelectedAbility()
         {
             string selectedAbilityName = abilitySlotsList[selectedAbilityIndex].AbilityName.ToString();
-            Ability abilitySelected = abilityDatabase.GetAbilityByName(selectedAbilityName);
+            Ability.Ability abilitySelected = abilityDatabase.GetAbilityByName(selectedAbilityName);
             abilityHolder.Activate(playerController, abilitySelected);
         }
 
@@ -204,7 +203,7 @@ namespace Ability
         private void UpdateAimBehaviour(int index)
         {
             string selectedAbilityName = abilitySlotsList[selectedAbilityIndex].AbilityName.ToString();
-            Ability abilitySelected = abilityDatabase.GetAbilityByName(selectedAbilityName);
+            Ability.Ability abilitySelected = abilityDatabase.GetAbilityByName(selectedAbilityName);
 
             var playerCamera = playerController.PlayerCamera;
             

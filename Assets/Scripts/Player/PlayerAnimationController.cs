@@ -6,13 +6,13 @@ namespace Player
 {
     public class PlayerAnimationController : MonoBehaviour
     {
-        [SerializeField] private Animator playerAnimator                = null;
+        [SerializeField] private Animator playerAnimator = null;
         [SerializeField] private NetworkMecanimAnimator networkAnimator = null;
 
         private bool _isWalking = false;
         private bool _isAir = false;
         private bool wasAirLastFrame = false;
-        
+
         private readonly int _xInput = Animator.StringToHash("XInput");
         private readonly int _yInput = Animator.StringToHash("YInput");
         private readonly int _isAirHash = Animator.StringToHash("isAir");
@@ -26,24 +26,27 @@ namespace Player
             _isAir = !playerController.KCC.Data.IsGrounded;
             wasAirLastFrame = !playerController.KCC.Data.WasGrounded;
             playerAnimator.SetBool(_isAirHash, _isAir);
-            
+
             _isWalking = playerController.KCC.Data.RealVelocity.magnitude >= .1f && !_isAir;
             playerAnimator.SetBool(_isWalkingHash, _isWalking);
-            
+
 
             if (playerController.Input.WasPressed(InputButtons.Fire))
             {
                 networkAnimator.SetTrigger("Attack");
             }
+            else if (playerController.Input.WasPressed(InputButtons.UseAbility))
+            {
+                networkAnimator.SetTrigger("UseAbility");
+            }
 
             if (playerController.HasInputAuthority && playerController.Runner.IsForward)
             {
-                playerController.CameraHandler.SetWalking(_isWalking);
-            
+                playerController.CameraHandler.SetWalkingAnimation(_isWalking);
+
                 if (wasAirLastFrame && !_isAir)
                 {
-                    playerController.CameraHandler.PlayLandAnimation();
-                    print(GameApp.Instance.Runner.Tick);
+                    playerController.CameraHandler.TriggerLandAnimation();
                 }
             }
         }
