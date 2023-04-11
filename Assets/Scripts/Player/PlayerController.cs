@@ -36,6 +36,8 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private AudioListener audioListener = null;
     [SerializeField] private GameObject playerUi = null;
 
+    [SerializeField] private ParticleSystem walkingEffect = null;
+    
     [Networked] public PlayerRef LastHitPlayer { get; set; }
     [Networked] public float LastGotHitTime { get; set; }
 
@@ -93,6 +95,16 @@ public class PlayerController : NetworkBehaviour
                     GameApp.Instance.GetPlayerNetworkData(LastHitPlayer).KillAmount++;
                 }
             }
+        }
+        
+        if (!KCC.Data.RealVelocity.IsAlmostZero())
+        {
+            if(!walkingEffect.isPlaying)
+                walkingEffect.Play();
+        }
+        else
+        {
+            walkingEffect.Stop();
         }
     }
 }

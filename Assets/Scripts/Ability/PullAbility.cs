@@ -10,6 +10,8 @@ namespace Ability
         [SerializeField] private float impulseMagnitude = 10f;
 
         [SerializeField] private GameObject effect = null;
+        
+        [SerializeField] private AudioSource audioSource = null;
 
         [SerializeField] private LayerMask hitLayer = default;
 
@@ -51,6 +53,7 @@ namespace Ability
         private void PlayEffect_RPC()
         {
             Instantiate(effect, transform);
+            audioSource.Play();
         }
     }
 }

@@ -12,6 +12,8 @@ namespace Ability
         [SerializeField] private GameObject effect          = null;
         [SerializeField] private GameObject cameraEffect    = null;
 
+        [SerializeField] private AudioSource audioSource = null;
+        
         [SerializeField] private LayerMask hitLayer = default;
 
         private readonly List<LagCompensatedHit> _hits = new List<LagCompensatedHit>();
@@ -60,6 +62,7 @@ namespace Ability
         private void PlayEffect_RPC()
         {
             Instantiate(effect, transform.position, transform.rotation);
+            audioSource.Play();
         }
 
         private void OnDrawGizmosSelected()

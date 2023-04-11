@@ -17,6 +17,8 @@ namespace GamePlay
         [SerializeField] private LayerMask floorLayerMask = default;
         [SerializeField] private LayerMask playerLayerMask = default;
 
+        [SerializeField] private AudioSource audioSource = null;
+        
         private readonly Collider[] _hitColliders = new Collider[350];
         private readonly List<short> _hitCubesIndex = new List<short>();
 
@@ -40,6 +42,8 @@ namespace GamePlay
                 PrepareTimer = TickTimer.None;
                 Instantiate(explosionEffect, transform);
                 DestroyCubes();
+                
+                audioSource.Play();
             }
             if (LifeTimer.Expired(Runner))
             {

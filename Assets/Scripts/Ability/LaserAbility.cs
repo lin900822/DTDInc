@@ -12,6 +12,8 @@ namespace Ability
 
         [SerializeField] private GameObject effect = null;
 
+        [SerializeField] private AudioSource audioSource = null;
+
         [SerializeField] private LayerMask floorLayerMask = default;
         [SerializeField] private LayerMask playerLayerMask = default;
 
@@ -92,6 +94,7 @@ namespace Ability
         private void PlayEffect_RPC()
         {
             Instantiate(effect, transform.position + Vector3.up * 1.5f, transform.rotation);
+            audioSource.Play();
         }
     }
 }

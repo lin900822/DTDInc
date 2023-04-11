@@ -10,8 +10,10 @@ namespace Ability
         [SerializeField] private GameObject cameraEffect = null;
         [SerializeField] private TeleportKCCProcessor teleportKCCProcessor = null;
 
-        public override void OnExecute()
+        public override void Activate(PlayerController playerController, Transform aimmedTrans)
         {
+            base.Activate(playerController, aimmedTrans);
+            
             if (aimmedTrans == null) return;
 
             if(aimmedTrans.TryGetComponent<PlayerController>(out var hitPlayer))
