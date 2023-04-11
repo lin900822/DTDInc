@@ -77,11 +77,15 @@ MonoBehaviour:
   explosionEffect: {fileID: 317912893965654528, guid: 995e2972d45974c48ac37460f49c42ae,
     type: 3}
   radius: 9
+  detectPlayerRadius: 35
   prepareTime: 1.3
   lifeTime: 5
-  affectLayerMask:
+  floorLayerMask:
     serializedVersion: 2
     m_Bits: 1024
+  playerLayerMask:
+    serializedVersion: 2
+    m_Bits: 2048
 --- !u!114 &1402436940383364371
 MonoBehaviour:
   m_ObjectHideFlags: 0

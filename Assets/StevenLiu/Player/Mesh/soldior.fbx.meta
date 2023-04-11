@@ -41,17 +41,17 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Material
-    second: {fileID: 2100000, guid: c668bfde17691c04f824a2b377871244, type: 2}
+    second: {fileID: 2100000, guid: a735a42e9c267fb47aa7890915f7722d, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: emission
-    second: {fileID: 2100000, guid: 32d52a16ae9eb1b4ea1225d5e4f53452, type: 2}
+    second: {fileID: 2100000, guid: 823e52c8894dddd47ac895cb3d9c54a7, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: outline
-    second: {fileID: 2100000, guid: 20780c825a2bb9e4ca1036a953c4b828, type: 2}
+    second: {fileID: 2100000, guid: 2ce848090dc9ee1498ddc878a3ec48bc, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -122,7 +122,7 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 1
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -151,7 +151,7 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 1
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -288,7 +288,7 @@ ModelImporter:
       takeName: soldior|walk_back
       internalID: 0
       firstFrame: 0
-      lastFrame: 18
+      lastFrame: 15
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -317,7 +317,7 @@ ModelImporter:
       takeName: soldior|walk_front
       internalID: 0
       firstFrame: 0
-      lastFrame: 18
+      lastFrame: 15
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -345,7 +345,7 @@ ModelImporter:
       name: soldior|walk_left
       takeName: soldior|walk_left
       internalID: 0
-      firstFrame: 0
+      firstFrame: 1
       lastFrame: 18
       wrapMode: 0
       orientationOffsetY: 0
@@ -374,7 +374,7 @@ ModelImporter:
       name: soldior|walk_right
       takeName: soldior|walk_right
       internalID: 0
-      firstFrame: 0
+      firstFrame: 1
       lastFrame: 18
       wrapMode: 0
       orientationOffsetY: 0

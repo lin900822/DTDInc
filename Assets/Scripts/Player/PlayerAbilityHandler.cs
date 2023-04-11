@@ -152,6 +152,7 @@ namespace Player
         private void UpdateSelectedIndex()
         {
             mouseScrollValue += playerController.Input.FixedInput.MouseWheelDelta;
+            
             mouseScrollValue = Mathf.Clamp(mouseScrollValue, 0, 100);
             selectedAbilityIndex = Mathf.Clamp((int)(mouseScrollValue / 33), 0, 2);
 
@@ -172,14 +173,14 @@ namespace Player
 
             int i = 0;
 
-            foreach (var abilistySlot in abilitySlotsList)
+            foreach (var abilitySlot in abilitySlotsList)
             {
-                var ability = abilityDatabase.GetAbilityByName(abilistySlot.AbilityName.ToString());
+                var ability = abilityDatabase.GetAbilityByName(abilitySlot.AbilityName.ToString());
 
                 if(ability != null)
                 {
                     abilityDisplayStatuses[i].Name = ability.AbilityName;
-                    abilityDisplayStatuses[i].Amount = abilistySlot.Amount;
+                    abilityDisplayStatuses[i].Amount = abilitySlot.Amount;
                     abilityDisplayStatuses[i].Icon = ability.AbilityIcon;
                 }
                 else

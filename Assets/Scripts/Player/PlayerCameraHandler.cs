@@ -1,9 +1,10 @@
-﻿using SO;
+﻿using Fusion;
+using SO;
 using UnityEngine;
 
 namespace Player
 {
-    public class PlayerCameraHandler : MonoBehaviour
+    public class PlayerCameraHandler : NetworkBehaviour
     {
         [SerializeField] private Animator cameraAnimator = null;
 
@@ -20,6 +21,24 @@ namespace Player
         {
             cameraAnimator.SetTrigger("onLand");
             cameraShake.ShakeCamera(cameraShakeSo.LandShake.x, cameraShakeSo.LandShake.y);
+        }
+
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+        public void Hit_RPC()
+        {
+            cameraShake.ShakeCamera(cameraShakeSo.HitShake.x, cameraShakeSo.HitShake.y);
+        }
+        
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+        public void Explosion_RPC()
+        {
+            cameraShake.ShakeCamera(cameraShakeSo.ExplosionShake.x, cameraShakeSo.ExplosionShake.y);
+        }
+        
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+        public void Laser_RPC()
+        {
+            cameraShake.ShakeCamera(cameraShakeSo.LaserShake.x, cameraShakeSo.LaserShake.y);
         }
     }
 }

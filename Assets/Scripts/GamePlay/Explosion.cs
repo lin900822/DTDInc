@@ -9,11 +9,13 @@ namespace GamePlay
         [SerializeField] private GameObject prepareEffect = null;
         [SerializeField] private GameObject explosionEffect = null;
         
-        [SerializeField] private float radius = 7.5f;
+        [SerializeField] private float radius = 9f;
+        [SerializeField] private float detectPlayerRadius = 35f;
         [SerializeField] private float prepareTime = 1.3f;
         [SerializeField] private float lifeTime = 5f;
         
-        [SerializeField] private LayerMask affectLayerMask = default;
+        [SerializeField] private LayerMask floorLayerMask = default;
+        [SerializeField] private LayerMask playerLayerMask = default;
 
         private readonly Collider[] _hitColliders = new Collider[350];
         private readonly List<short> _hitCubesIndex = new List<short>();
@@ -57,21 +59,44 @@ namespace GamePlay
                 _hitColliders[i] = null;
             }
             
-            Physics.OverlapSphereNonAlloc(transform.position, radius, _hitColliders, affectLayerMask);
+            Physics.OverlapSphereNonAlloc(transform.position, radius, _hitColliders, floorLayerMask);
 
-            foreach (var collider in _hitColliders)
+            foreach (var hit in _hitColliders)
             {
-                if (collider == null) continue;
+                if (hit == null) continue;
 
-                if (collider.TryGetComponent<Cube>(out var cube))
+                if (hit.TryGetComponent<Cube>(out var cube))
                 {
                     _hitCubesIndex.Add(cube.Index);
                 }
             }
-
-            print(_hitCubesIndex.Count);
             
             GameManager.Instance.FloorManager.DestroyCubes(_hitCubesIndex.ToArray());
+            print(_hitCubesIndex.Count);
+            
+            DoCameraShake();
+        }
+
+        private void DoCameraShake()
+        {
+            _hitCubesIndex.Clear();
+
+            for (int i = 0; i < _hitColliders.Length; i++)
+            {
+                _hitColliders[i] = null;
+            }
+
+            Physics.OverlapSphereNonAlloc(transform.position, detectPlayerRadius, _hitColliders, playerLayerMask);
+
+            foreach (var hit in _hitColliders)
+            {
+                if (hit == null) continue;
+
+                if (hit.TryGetComponent<PlayerController>(out var player))
+                {
+                    player.CameraHandler.Explosion_RPC();
+                }
+            }
         }
     }
 }

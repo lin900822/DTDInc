@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f107482320fb8b14b8a863ad5f50e01f, type: 3}
   m_Name: Camera Shake Data
   m_EditorClassIdentifier: 
-  LandShake: {x: 0.015, y: 0.05}
+  LandShake: {x: 0.025, y: 0.05}
+  HitShake: {x: 0.07, y: 0.2}
+  ExplosionShake: {x: 0.2, y: 0.3}
+  LaserShake: {x: 1, y: 0.0275}

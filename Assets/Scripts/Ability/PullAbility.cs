@@ -34,6 +34,8 @@ namespace Ability
                     hitPlayer.KCC.AddExternalImpulse(pullDirection * impulseMagnitude);
                     hitPlayer.LastHitPlayer = Object.InputAuthority;
                     hitPlayer.LastGotHitTime = Time.time;
+                    
+                    hitPlayer.CameraHandler.Hit_RPC();
                 }
             }
         }

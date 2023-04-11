@@ -8,10 +8,12 @@ namespace Ability
     public class LaserAbility : Ability
     {
         [SerializeField] private Vector3 destroyBound = new Vector3(1, 1, 50);
+        [SerializeField] private Vector3 detectPlayerBound = new Vector3(10, 1, 50);
 
         [SerializeField] private GameObject effect = null;
 
-        [SerializeField] private LayerMask affectLayerMask = default;
+        [SerializeField] private LayerMask floorLayerMask = default;
+        [SerializeField] private LayerMask playerLayerMask = default;
 
         private readonly Collider[] _hitColliders = new Collider[350];
         private readonly List<short> _hitCubesIndex = new List<short>();
@@ -45,7 +47,7 @@ namespace Ability
                 _hitColliders[i] = null;
             }
 
-            Physics.OverlapBoxNonAlloc(_destroyCenter, destroyBound, _hitColliders, _destroyRotation, affectLayerMask);
+            Physics.OverlapBoxNonAlloc(_destroyCenter, destroyBound, _hitColliders, _destroyRotation, floorLayerMask);
 
             foreach (var collider in _hitColliders)
             {
@@ -56,11 +58,36 @@ namespace Ability
                     _hitCubesIndex.Add(cube.Index);
                 }
             }
+            
             print(_hitCubesIndex.Count);
             
             GameManager.Instance.FloorManager.DestroyCubes(_hitCubesIndex.ToArray());
+            
+            DoCameraShake();
         }
-        
+
+        private void DoCameraShake()
+        {
+            _hitCubesIndex.Clear();
+
+            for (int i = 0; i < _hitColliders.Length; i++)
+            {
+                _hitColliders[i] = null;
+            }
+
+            Physics.OverlapBoxNonAlloc(_destroyCenter, detectPlayerBound, _hitColliders, _destroyRotation, playerLayerMask);
+
+            foreach (var hit in _hitColliders)
+            {
+                if (hit == null) continue;
+
+                if (hit.TryGetComponent<PlayerController>(out var player))
+                {
+                    player.CameraHandler.Laser_RPC();
+                }
+            }
+        }
+
         [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
         private void PlayEffect_RPC()
         {

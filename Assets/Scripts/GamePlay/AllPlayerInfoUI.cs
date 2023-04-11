@@ -80,6 +80,8 @@ namespace GamePlay
         {
             playerNames[index].text = playerName;
 
+            selectedCharacterIndex = Mathf.Clamp(selectedCharacterIndex, 0, 3);
+            
             iconsImg[index].sprite = icons[selectedCharacterIndex];
         }
 
