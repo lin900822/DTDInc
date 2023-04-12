@@ -13,6 +13,7 @@ namespace GamePlay
 
         [SerializeField] private NetworkTransform networkTransform = null;
         [SerializeField] private GameObject effect = null;
+        [SerializeField] private GameObject getEffect = null;
 
         [SerializeField] private AudioSource audioSource = null;
 
@@ -95,13 +96,14 @@ namespace GamePlay
             OwnerId = obj.Id;
             OwnerPlayerRef = obj.Object.InputAuthority;
 
-            PlaySound_RPC();
+            PlayEffect_RPC();
         }
 
         [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-        private void PlaySound_RPC()
+        private void PlayEffect_RPC()
         {
             audioSource.Play();
+            Instantiate(getEffect, transform);
         }
 
         public override void Render()

@@ -1,12 +1,13 @@
 ﻿using System;
 using DG.Tweening;
+using Fusion;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
 namespace GamePlay
 {
-    public class GameUIManager : MonoBehaviour
+    public class GameUIManager : NetworkBehaviour
     {
         [SerializeField] private CanvasGroup systemMessageCanvasGroup = null;
         [SerializeField] private Text systemMessageTxt = null;
@@ -36,7 +37,8 @@ namespace GamePlay
             }
         }
 
-        public void ShowMessage(string msg)
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+        public void ShowMessage_Rpc(string msg)
         {
             systemMessageCanvasGroup.alpha = 1f;
             systemMessageTxt.text = msg;
@@ -53,7 +55,8 @@ namespace GamePlay
             timerText.text = secondsLeft > 0 ? $"{minutes:00} : {seconds:00}" : $"00 : 00";
         }
 
-        public void StartCountDown()
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+        public void StartCountDown_Rpc()
         {
             countDownAnimator.SetTrigger("Start");
         }

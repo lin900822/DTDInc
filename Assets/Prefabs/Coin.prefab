@@ -106,6 +106,8 @@ MonoBehaviour:
   detectRadius: 1
   networkTransform: {fileID: 8136094406736176593}
   effect: {fileID: 8209016374328569668}
+  getEffect: {fileID: 8363978043021033949, guid: 22d1721a2fb962d40b5b526c0d54d22d,
+    type: 3}
   audioSource: {fileID: 5335261937847792044}
   hitLayers:
     serializedVersion: 2

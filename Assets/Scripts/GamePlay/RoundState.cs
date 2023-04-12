@@ -27,7 +27,7 @@ namespace GamePlay
         public override void EnterState()
         {
             RoundManager.StartReady();
-            GameManager.Instance.GameUIManager.ShowMessage("遊戲即將開始...");
+            GameManager.Instance.GameUIManager.ShowMessage_Rpc("遊戲即將開始...");
         }
 
         public override void OnLogic()
@@ -36,7 +36,7 @@ namespace GamePlay
             
             if(RoundManager.TimerRemainingTime <= 5f && !hasCountDown)
             {
-                GameManager.Instance.GameUIManager.StartCountDown();
+                GameManager.Instance.GameUIManager.StartCountDown_Rpc();
 
                 hasCountDown = true;
             }
@@ -60,7 +60,7 @@ namespace GamePlay
 
         public override void OnLogic()
         {
-            GameManager.Instance.GameUIManager.UpdateTimer(RoundManager.TimerRemainingTime);
+            GameManager.Instance.GameUIManager.UpdateTimer(RoundManager.TimerRemainingTime + 1);
         }
 
         public override void ExitState()
@@ -81,7 +81,7 @@ namespace GamePlay
         {
             RoundManager.StartGameOver();
             
-            GameManager.Instance.GameUIManager.ShowMessage("Game Over !");
+            GameManager.Instance.GameUIManager.ShowMessage_Rpc("Game Over !");
 
             _enterTime = Time.timeSinceLevelLoad;
         }
@@ -116,7 +116,7 @@ namespace GamePlay
 
             var winnerName = winnerPlayerData.PlayerName;
             
-            GameManager.Instance.GameUIManager.ShowMessage($"{winnerName} has won the Game !");
+            GameManager.Instance.GameUIManager.ShowMessage_Rpc($"{winnerName} has won the Game !");
         }
     }
 }

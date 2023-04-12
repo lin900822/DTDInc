@@ -18,6 +18,7 @@ namespace GamePlay
         [SerializeField] private Vector3 detectionBox = Vector3.one;
         [SerializeField] private LayerMask hitLayer = default;
 
+        [SerializeField] private GameObject getEffect = null;
         [SerializeField] private AudioSource audioSource = null;
 
         [SerializeField] private List<string> abilities = new List<string>();
@@ -92,15 +93,16 @@ namespace GamePlay
                         coolDownTimer = TickTimer.CreateFromSeconds(Runner, coolDownTime);
                     }
 
-                    PlaySound_RPC();
+                    PlayEffect_RPC();
                 }
             }
         }
 
         [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-        private void PlaySound_RPC()
+        private void PlayEffect_RPC()
         {
             audioSource.Play();
+            Instantiate(getEffect, transform);
         }
 
         private static void OnIsActiveChanged(Changed<SkillBox> changed)

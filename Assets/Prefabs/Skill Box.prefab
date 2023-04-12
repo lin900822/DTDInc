@@ -112,6 +112,8 @@ MonoBehaviour:
   hitLayer:
     serializedVersion: 2
     m_Bits: 2048
+  getEffect: {fileID: 6484226114187126025, guid: 20932bec51690d74b89ecdf592833654,
+    type: 3}
   audioSource: {fileID: 8428140068384359832}
   abilities:
   - Push
