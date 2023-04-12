@@ -18,13 +18,17 @@ namespace GamePlay
         [SerializeField] private Vector3 detectionBox = Vector3.one;
         [SerializeField] private LayerMask hitLayer = default;
 
+        [SerializeField] private AudioSource audioSource = null;
+
         [SerializeField] private List<string> abilities = new List<string>();
 
-        [Networked(OnChanged = nameof(OnIsActiveChanged))] private NetworkBool IsActive { get; set; }
+        [Networked(OnChanged = nameof(OnIsActiveChanged))]
+        private NetworkBool IsActive { get; set; }
+
         [Networked] private TickTimer coolDownTimer { get; set; }
 
         private GameManager _gameManager = null;
-        
+
         private List<LagCompensatedHit> hits = new List<LagCompensatedHit>();
 
         private void Start()
@@ -59,8 +63,7 @@ namespace GamePlay
                 {
                     randomX = Random.Range(-sceneRadius, sceneRadius);
                     randomZ = Random.Range(-sceneRadius, sceneRadius);
-                } 
-                while ((randomX * randomX + randomZ * randomZ) > sceneRadius * sceneRadius);
+                } while ((randomX * randomX + randomZ * randomZ) > sceneRadius * sceneRadius);
 
                 transform.position = new Vector3(randomX, transform.position.y, randomZ);
             }
@@ -72,7 +75,8 @@ namespace GamePlay
             if (!Object.HasStateAuthority) return;
             if (!IsActive) return;
 
-            int hitAmount = Runner.LagCompensation.OverlapBox(transform.position, detectionBox, Quaternion.identity, Object.InputAuthority, hits, hitLayer, HitOptions.IgnoreInputAuthority);
+            int hitAmount = Runner.LagCompensation.OverlapBox(transform.position, detectionBox, Quaternion.identity,
+                Object.InputAuthority, hits, hitLayer, HitOptions.IgnoreInputAuthority);
 
             if (hitAmount > 0)
             {
@@ -87,8 +91,16 @@ namespace GamePlay
                         IsActive = false;
                         coolDownTimer = TickTimer.CreateFromSeconds(Runner, coolDownTime);
                     }
+
+                    PlaySound_RPC();
                 }
             }
+        }
+
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+        private void PlaySound_RPC()
+        {
+            audioSource.Play();
         }
 
         private static void OnIsActiveChanged(Changed<SkillBox> changed)

@@ -22,18 +22,29 @@ namespace GamePlay
     {
         public ReadyState(RoundManager manager) : base(manager) { }
 
+        private bool hasCountDown = false;
+        
         public override void EnterState()
         {
             RoundManager.StartReady();
+            GameManager.Instance.GameUIManager.ShowMessage("遊戲即將開始...");
         }
 
         public override void OnLogic()
         {
-            GameManager.Instance.GameUIManager.ShowMessage($"Game will start in {RoundManager.TimerRemainingTime:0}");
+            GameManager.Instance.GameUIManager.UpdateTimer(RoundManager.TimerRemainingTime + 1);
+            
+            if(RoundManager.TimerRemainingTime <= 5f && !hasCountDown)
+            {
+                GameManager.Instance.GameUIManager.StartCountDown();
+
+                hasCountDown = true;
+            }
         }
 
         public override void ExitState()
         {
+            hasCountDown = false;
             RoundManager.EndReady();
         }
     }
@@ -45,8 +56,6 @@ namespace GamePlay
         public override void EnterState()
         {
             RoundManager.StartInGame();
-            
-            GameManager.Instance.GameUIManager.ShowMessage("Game Start !");
         }
 
         public override void OnLogic()

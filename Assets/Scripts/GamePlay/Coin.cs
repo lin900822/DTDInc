@@ -13,15 +13,19 @@ namespace GamePlay
 
         [SerializeField] private NetworkTransform networkTransform = null;
         [SerializeField] private GameObject effect = null;
-        
+
+        [SerializeField] private AudioSource audioSource = null;
+
         [SerializeField] private LayerMask hitLayers = default;
 
         private PlayerController _playerController = null;
 
         private readonly List<LagCompensatedHit> _hits = new List<LagCompensatedHit>();
 
-        [Networked(OnChanged = nameof(OnPlayerIdChanged))] public NetworkBehaviourId OwnerId   { get; set; }
-        [Networked] public PlayerRef OwnerPlayerRef     { get; set; }
+        [Networked(OnChanged = nameof(OnPlayerIdChanged))]
+        public NetworkBehaviourId OwnerId { get; set; }
+
+        [Networked] public PlayerRef OwnerPlayerRef { get; set; }
 
         private GameManager _gameManager = null;
 
@@ -33,9 +37,9 @@ namespace GamePlay
         public override void FixedUpdateNetwork()
         {
             if (_gameManager.RoundManager.Stage == RoundStage.Ready) return;
-            
+
             DetectPlayer();
-            
+
             _playerController = Runner.TryFindBehaviour(OwnerId, out PlayerController obj) ? obj : null;
 
             if (OwnerPlayerRef != default)
@@ -57,10 +61,11 @@ namespace GamePlay
                     weight = 2.5f;
                 else if (roundRemainTime <= 1f)
                     weight = 10f;
-                
-                playerData.KeepCoinTime += Runner.DeltaTime * weight;
+
+                if (GameManager.Instance.RoundManager.Stage == RoundStage.InGame)
+                    playerData.KeepCoinTime += Runner.DeltaTime * weight;
             }
-            
+
             FollowPlayer();
 
             DetectIfIsOutOfBound();
@@ -81,21 +86,30 @@ namespace GamePlay
 
             _hits.Clear();
 
-            Runner.LagCompensation.OverlapSphere(transform.position, detectRadius, Object.InputAuthority, _hits, hitLayers, HitOptions.None);
+            Runner.LagCompensation.OverlapSphere(transform.position, detectRadius, Object.InputAuthority, _hits,
+                hitLayers, HitOptions.None);
 
             if (_hits.Count <= 0) return;
             if (!_hits[0].GameObject.TryGetComponent<PlayerController>(out var obj)) return;
-            
+
             OwnerId = obj.Id;
             OwnerPlayerRef = obj.Object.InputAuthority;
+
+            PlaySound_RPC();
         }
-        
+
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+        private void PlaySound_RPC()
+        {
+            audioSource.Play();
+        }
+
         public override void Render()
         {
             networkTransform.InterpolationTarget.Rotate(Vector3.up * Time.deltaTime * 50f);
-            
+
             if (_gameManager.RoundManager.Stage == RoundStage.Ready) return;
-            
+
             FollowPlayer();
         }
 
@@ -103,16 +117,16 @@ namespace GamePlay
         {
             if (_playerController == null) return;
             if (OwnerId == NetworkBehaviourId.None) return;
-            
+
             transform.position = _playerController.transform.position + new Vector3(0, 3.5f, 0);
         }
 
         public void ResetCoin()
         {
             if (!Object.HasStateAuthority) return;
-            
+
             _hits.Clear();
-            
+
             OwnerId = NetworkBehaviourId.None;
             OwnerPlayerRef = default;
             _playerController = null;
@@ -128,9 +142,8 @@ namespace GamePlay
                 randomZ = Random.Range(-sceneRadius, sceneRadius);
 
                 isGrounded = Physics.Raycast(new Vector3(randomX, 1, randomZ), Vector3.down, Mathf.Infinity);
-            } 
-            while ((randomX * randomX + randomZ * randomZ) > sceneRadius * sceneRadius || !isGrounded);
-            
+            } while ((randomX * randomX + randomZ * randomZ) > sceneRadius * sceneRadius || !isGrounded);
+
             transform.position = new Vector3(randomX, 1.5f, randomZ);
         }
 

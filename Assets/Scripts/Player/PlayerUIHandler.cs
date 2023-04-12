@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,7 +16,17 @@ public class PlayerUIHandler : MonoBehaviour
     [SerializeField] private Sprite[] crosshairSprites = null;
 
     [SerializeField] private TMP_Text playerNameTxt = null;
+
+    private AbilitySlotUIInfo[] lastFrameInfos = new AbilitySlotUIInfo[3];
     
+    private void LateUpdate()
+    {
+        foreach (var img in abilityIconImgs)
+        {
+            img.rectTransform.localScale = Vector3.Lerp(img.rectTransform.localScale, Vector3.one, Time.deltaTime * 7);
+        }
+    }
+
     public void UpdateSelectedSlot(int selectedIndex)
     {
         for (int i = 0; i < abilityIconImgs.Length; i++)
@@ -27,7 +38,7 @@ public class PlayerUIHandler : MonoBehaviour
             }
             else
             {
-                abilityIconImgs[i].color = new Color(.5f, .5f, .5f, .5f);
+                abilityIconImgs[i].color = new Color(.7f, .7f, .7f, 1f);
                 abilitySlotImgs[i].enabled = false;
             }
         }
@@ -40,7 +51,10 @@ public class PlayerUIHandler : MonoBehaviour
             abilityAmountTxt[i].text = abilities[i].Amount == 0 ? "" : abilities[i].Amount.ToString();
             abilityIconImgs[i].sprite = abilities[i].Icon;
 
-            if(abilities[i].Amount > 0)
+            if(lastFrameInfos[i].Amount != abilities[i].Amount)
+                abilityIconImgs[i].rectTransform.localScale = new Vector3(2f, 2f, 1);
+
+            if (abilities[i].Amount > 0)
             {
                 abilityIconImgs[i].gameObject.SetActive(true);
             }
@@ -49,13 +63,15 @@ public class PlayerUIHandler : MonoBehaviour
                 abilityIconImgs[i].gameObject.SetActive(false);
             }
         }
+
+        lastFrameInfos = abilities;
     }
 
     public void SetAimCrosshair(bool canAim)
     {
-        if(canAim)
+        if (canAim)
         {
-            crosshairImg.sprite = crosshairSprites[1]; 
+            crosshairImg.sprite = crosshairSprites[1];
         }
         else
         {
