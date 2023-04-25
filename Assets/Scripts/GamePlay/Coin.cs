@@ -35,6 +35,11 @@ namespace GamePlay
             _gameManager = GameManager.Instance;
         }
 
+        public override void Spawned()
+        {
+            OwnerPlayerRef = default;
+        }
+
         public override void FixedUpdateNetwork()
         {
             if (_gameManager.RoundManager.Stage == RoundStage.Ready) return;
@@ -96,14 +101,14 @@ namespace GamePlay
             OwnerId = obj.Id;
             OwnerPlayerRef = obj.Object.InputAuthority;
 
-            PlayEffect_RPC();
+            PlayEffect_RPC(transform.position);
         }
 
         [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-        private void PlayEffect_RPC()
+        private void PlayEffect_RPC(Vector3 pos)
         {
             audioSource.Play();
-            Instantiate(getEffect, transform);
+            Instantiate(getEffect, pos, Quaternion.identity);
         }
 
         public override void Render()

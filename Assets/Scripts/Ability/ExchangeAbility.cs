@@ -13,10 +13,10 @@ namespace Ability
         public override void Activate(PlayerController playerController, Transform aimmedTrans)
         {
             base.Activate(playerController, aimmedTrans);
-            
+
             if (aimmedTrans == null) return;
 
-            if(aimmedTrans.TryGetComponent<PlayerController>(out var hitPlayer))
+            if (aimmedTrans.TryGetComponent<PlayerController>(out var hitPlayer))
             {
                 Vector3 currentPosition = playerController.transform.position;
 
@@ -27,7 +27,7 @@ namespace Ability
                 hitPlayer.LastHitPlayer = Object.InputAuthority;
                 hitPlayer.LastGotHitTime = Time.time;
 
-                if (Object.HasInputAuthority)
+                if (Object.HasStateAuthority)
                 {
                     PlayEffect_RPC(currentPosition);
                     Instantiate(cameraEffect, playerController.PlayerCamera.transform);
@@ -35,11 +35,11 @@ namespace Ability
             }
         }
 
-        [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
         private void PlayEffect_RPC(Vector3 pos)
         {
             Instantiate(effect, pos + Vector3.up * 1.5f, Quaternion.identity);
+            Instantiate(cameraEffect, playerController.PlayerCamera.transform);
         }
     }
 }
- 

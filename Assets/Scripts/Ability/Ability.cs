@@ -30,8 +30,8 @@ namespace Ability
 
         public virtual void Deactivate()
         {
-            this.playerController = null;
-            this.aimmedTrans = null;
+            // this.playerController = null;
+            // this.aimmedTrans = null;
         }
 
         public virtual void OnPrepare() { }

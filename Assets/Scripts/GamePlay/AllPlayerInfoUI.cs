@@ -13,6 +13,7 @@ namespace GamePlay
 
         [SerializeField] private TMP_Text[] playerNames = new TMP_Text[4];
         [SerializeField] private Image[] iconsImg = new Image[4];
+        [SerializeField] private Image[] hasCoinImg = new Image[4];
 
         [SerializeField] private Image[] frames = new Image[4];
         [SerializeField] private Image[] outlines = new Image[4];
@@ -41,6 +42,9 @@ namespace GamePlay
                 {
                     frames[i].sprite = selfFrame;
                     outlines[i].sprite = selfOutline;
+                    
+                    if (ColorUtility.TryParseHtmlString("#57deef", out var newCol))
+                        playerNames[i].color = newCol;
                 }
 
                 i++;
@@ -72,6 +76,8 @@ namespace GamePlay
                     SetPlayerProgress(i, (playerData.Value.KeepCoinTime / allPlayerKeepCoinTime) * 100);
                 }
 
+                hasCoinImg[i].gameObject.SetActive(GameManager.Instance.Coin.OwnerPlayerRef == playerData.Key);
+                
                 i++;
             }
         }
