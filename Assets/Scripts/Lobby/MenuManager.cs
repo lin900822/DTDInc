@@ -1,3 +1,5 @@
+using System;
+using Fusion;
 using UnityEngine;
 
 namespace Lobby
@@ -9,6 +11,13 @@ namespace Lobby
         private void Start()
         {
             SwitchPanel(0);
+
+            GameApp.Instance.Event.OnShutdown.AddListener(OnShutdown);
+        }
+
+        private void OnDestroy()
+        {
+            GameApp.Instance.Event.OnShutdown.RemoveListener(OnShutdown);
         }
 
         public void SwitchPanel(int panelIndex)
@@ -32,6 +41,11 @@ namespace Lobby
             {
                 panels[i].SetActive(false);
             }
+        }
+        
+        private void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
+        {
+            SwitchPanel(3);
         }
     }
 }

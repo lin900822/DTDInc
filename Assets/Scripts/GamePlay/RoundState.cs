@@ -98,6 +98,8 @@ namespace GamePlay
         public override void ExitState()
         {
             RoundManager.EndGameOver();
+            GameApp.Instance.Runner.SetActiveScene(3);
+            GameApp.Instance.ResetAllPlayerData();
         }
 
         private void DetermineWinner()

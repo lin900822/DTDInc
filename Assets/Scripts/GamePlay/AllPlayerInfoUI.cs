@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Fusion;
+using SO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,6 +11,8 @@ namespace GamePlay
     public class AllPlayerInfoUI : MonoBehaviour
     {
         [SerializeField] private CanvasGroup[] playerInfoCanvasGroups = new CanvasGroup[4];
+
+        [SerializeField] private CharacterInfoSO characterInfoSo = null;
 
         [SerializeField] private TMP_Text[] playerNames = new TMP_Text[4];
         [SerializeField] private Image[] iconsImg = new Image[4];
@@ -86,9 +89,9 @@ namespace GamePlay
         {
             playerNames[index].text = playerName;
 
-            selectedCharacterIndex = Mathf.Clamp(selectedCharacterIndex, 0, 3);
+            selectedCharacterIndex = Mathf.Clamp(selectedCharacterIndex, 0, 4);
             
-            iconsImg[index].sprite = icons[selectedCharacterIndex];
+            iconsImg[index].sprite = characterInfoSo.getIconById(selectedCharacterIndex);
         }
 
         public void SetPlayerProgress(int index, float ratio)

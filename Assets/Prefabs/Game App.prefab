@@ -62,6 +62,7 @@ MonoBehaviour:
   playerName: 
   networkRunner: {fileID: 6282684257492240058}
   networkEvents: {fileID: 1518050609676752912}
+  canvasGroup: {fileID: 0}
   playerNetworkDataPrefab: {fileID: 4393251662132591519, guid: 0ab4e17c3f520084e8300595c5df7097,
     type: 3}
 --- !u!114 &1518050609676752912
@@ -141,6 +142,12 @@ PrefabInstance:
       propertyPath: m_audioClip
       value: 
       objectReference: {fileID: 8300000, guid: dafaddc45b4b2d74ebab9875f2d416bc, type: 3}
+    - target: {fileID: 4584616093567214202, guid: 984b2e9735838af4199974bd73c63289,
+        type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 5603219932521247847, guid: 0214672a26aa4c349a10205609c774bf,
+        type: 2}
     - target: {fileID: 4584616093567214203, guid: 984b2e9735838af4199974bd73c63289,
         type: 3}
       propertyPath: m_RootOrder

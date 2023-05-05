@@ -29,7 +29,7 @@ namespace GamePlay
 
                 var index = player.Value.SelectedCharacterIndex - 1;
 
-                index = Mathf.Clamp(index, 0, 3);
+                index = Mathf.Clamp(index, 0, 4);
             
                 var playerController = Runner.Spawn(playerPrefabs[index], spawnPoint.position, spawnPoint.rotation, player.Key);
                 

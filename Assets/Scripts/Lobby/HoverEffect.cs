@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -6,19 +7,25 @@ namespace Lobby
 {
     public class HoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        [SerializeField] private Image image = null;
+        [SerializeField] private RectTransform rectTransform = null;
 
-        [SerializeField] private Sprite hoveredSprite = null;
-        [SerializeField] private Sprite unhoveredSprite = null;
-
+        [SerializeField] private Vector2 hoverScale = Vector2.one;
+        
+        private Vector2 targetScale = Vector2.one;
+        
         public void OnPointerEnter(PointerEventData eventData)
         {
-            image.sprite = hoveredSprite;
+            targetScale = hoverScale;
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            image.sprite = unhoveredSprite;
+            targetScale = Vector2.one;
+        }
+
+        private void Update()
+        {
+            rectTransform.localScale = Vector3.Lerp(rectTransform.localScale, targetScale, Time.deltaTime * 10);
         }
     }
 }

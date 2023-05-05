@@ -7,8 +7,8 @@ public class PlayerNetworkData : NetworkBehaviour
     [Networked] public string PlayerName { get; set; }
     
     [Networked] public NetworkBool IsReady { get; set; }
-    
-    [Networked] public int SelectedCharacterIndex { get; set; }
+
+    [Networked] public int SelectedCharacterIndex { get; set; } = -999;
 
     [Networked] public int KillAmount { get; set; }
     [Networked] public int DeathAmount { get; set; }

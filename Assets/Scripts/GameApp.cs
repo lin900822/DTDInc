@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Fusion;
+using Fusion.Sockets;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 
 public class GameApp : MonoBehaviour
 {
@@ -22,6 +20,8 @@ public class GameApp : MonoBehaviour
         
     public Dictionary<PlayerRef, PlayerNetworkData> PlayerNetworkDataList { get; } = new Dictionary<PlayerRef, PlayerNetworkData>();
 
+    private float joinRoomTime = -999f;
+    
     private void Awake()
     {
         if(Instance == null)
@@ -30,6 +30,9 @@ public class GameApp : MonoBehaviour
                     
             networkEvents.PlayerJoined.AddListener(OnPlayerJoined);
             networkEvents.PlayerLeft.AddListener(OnPlayerLeft);
+            networkEvents.OnShutdown.AddListener(OnShutdown);
+            networkEvents.OnDisconnectedFromServer.AddListener(OnDisconnectedFromServer);
+            networkEvents.OnConnectFailed.AddListener(OnConnectFailed);
                 
             DontDestroyOnLoad(gameObject);
         }
@@ -41,12 +44,23 @@ public class GameApp : MonoBehaviour
 
     private void Update()
     {
-        if (CheckIfAllPlayerReady())
+        if (joinRoomTime > 0 && Time.time - joinRoomTime >= 10)
         {
-            networkRunner.SetActiveScene("Wilson");
+            Runner.Shutdown();
         }
     }
 
+    public void StartGame()
+    {
+        if (Runner.IsServer)
+        {
+            if (CheckIfAllPlayerReady())
+            {
+                Runner.SetActiveScene("Wilson");
+            }
+        }
+    }
+    
     private bool CheckIfAllPlayerReady()
     {
         if (PlayerNetworkDataList.Count <= 0) return false;
@@ -58,6 +72,17 @@ public class GameApp : MonoBehaviour
 
         return true;
     }
+    
+    public void ResetAllPlayerData()
+    {
+        if (PlayerNetworkDataList.Count <= 0) return;
+            
+        foreach (var data in PlayerNetworkDataList)
+        {
+            data.Value.IsReady = false;
+            data.Value.SelectedCharacterIndex = -999;
+        }
+    }
 
     public async Task<StartGameResult> CreateRoom(string roomName, int maxPlayerAmount)
     {
@@ -66,7 +91,7 @@ public class GameApp : MonoBehaviour
         var result = await networkRunner.JoinSessionLobby(SessionLobby.ClientServer);
 
         if (!result.Ok) return result;
-
+        
         result = await networkRunner.StartGame(new StartGameArgs()
         {
             GameMode = GameMode.Host,
@@ -87,6 +112,8 @@ public class GameApp : MonoBehaviour
 
         if (!result.Ok) return result;
 
+        joinRoomTime = Time.time;
+        
         result = await networkRunner.StartGame(new StartGameArgs()
         {
             GameMode = GameMode.Client,
@@ -94,6 +121,8 @@ public class GameApp : MonoBehaviour
             Scene = 3,
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
         });
+        
+        joinRoomTime = -999f;
 
         return result;
     }
@@ -120,7 +149,7 @@ public class GameApp : MonoBehaviour
 
         return data;
     }
-        
+
     // Network Events
 
     private void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
@@ -135,5 +164,19 @@ public class GameApp : MonoBehaviour
             runner.Despawn(playerNetworkData.Object);
             PlayerNetworkDataList.Remove(player);
         }
+    }
+
+    private void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
+    {
+        
+    }
+    
+    private void OnDisconnectedFromServer(NetworkRunner runner)
+    {
+        print("OnDisconnectedFromServer");
+    }
+    private void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason)
+    {
+        print("OnConnectRequest");
     }
 }

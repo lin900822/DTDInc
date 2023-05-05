@@ -24,6 +24,10 @@ namespace Lobby
             {
                 //menuManager.SwitchPanel(1);
             }
+            else
+            {
+                print("無法加入房間，請再試一次!");
+            }
         }
     }
 }
