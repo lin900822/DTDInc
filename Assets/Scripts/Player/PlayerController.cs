@@ -11,7 +11,7 @@ using Player;
 public class PlayerController : NetworkBehaviour
 {
     public PlayerInputHandler Input => inputHandler;
-    public PlayerAgent Agent => agent;
+    public Agent Agent => agent;
     public KCC KCC => Agent.KCC;
     public ThirdPersonCamera ThirdPersonCamera => thirdPersonCamera;
     public PlayerAttackHandler AttackHandler => attackHandler;
@@ -23,7 +23,7 @@ public class PlayerController : NetworkBehaviour
     public Camera PlayerCamera => playerCamera;
 
     [SerializeField] private PlayerInputHandler inputHandler = null;
-    [SerializeField] private PlayerAgent agent = null;
+    [SerializeField] private Agent agent = null;
     [SerializeField] private ThirdPersonCamera thirdPersonCamera = null;
     [SerializeField] private PlayerAttackHandler attackHandler = null;
     [SerializeField] private PlayerAbilityHandler abilityHandler = null;
@@ -58,6 +58,8 @@ public class PlayerController : NetworkBehaviour
 
     private void SetLocalComponents()
     {
+        if (Runner.IsSinglePlayer) return;
+
         if (Object.HasInputAuthority)
         {
         }
@@ -71,6 +73,8 @@ public class PlayerController : NetworkBehaviour
 
     private void SetPlayerName()
     {
+        if (Runner.IsSinglePlayer) return;
+
         var playerName = GameApp.Instance.GetPlayerNetworkData(Object.InputAuthority).PlayerName;
 
         uIHandler.SetPlayerName(!Object.HasInputAuthority ? playerName : "");

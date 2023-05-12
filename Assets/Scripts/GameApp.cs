@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Fusion;
 using Fusion.Sockets;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameApp : MonoBehaviour
 {
@@ -97,7 +98,7 @@ public class GameApp : MonoBehaviour
             GameMode = GameMode.Host,
             SessionName = roomName,
             PlayerCount = maxPlayerAmount,
-            Scene = 3,
+            Scene = 4,
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
         });
 
@@ -118,11 +119,32 @@ public class GameApp : MonoBehaviour
         {
             GameMode = GameMode.Client,
             SessionName = roomName,
-            Scene = 3,
+            Scene = 4,
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
         });
         
         joinRoomTime = -999f;
+
+        return result;
+    }
+
+    public async Task<StartGameResult> StartSinglePlayer()
+    {
+        networkRunner.ProvideInput = true;
+
+        var result = await networkRunner.StartGame(new StartGameArgs()
+        {
+            GameMode = GameMode.Single,
+            SessionName = "",
+            Scene = 4,
+            SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
+        });
+
+        PlayerRef botPlayerRef = (PlayerRef)99;
+        PlayerNetworkData data = networkRunner.Spawn(playerNetworkDataPrefab, transform.position, transform.rotation, botPlayerRef);
+        data.SelectedCharacterIndex = 2;
+        data.IsReady = true;
+        data.PlayerName = "Bot";
 
         return result;
     }

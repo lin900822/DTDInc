@@ -12,9 +12,9 @@ namespace Lobby
             menuManager.SwitchPanel(2);
         }
 
-        public void Exit()
+        public void OnSinglePlayerBtnClicked()
         {
-
+            GameApp.Instance.StartSinglePlayer();
         }
     }
 }

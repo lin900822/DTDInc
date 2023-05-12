@@ -33,6 +33,12 @@ namespace Ability
 
             foreach (var hit in _hits)
             {
+                if (hit.GameObject.TryGetComponent<BotAgent>(out var hitBot))
+                {
+                    hitBot.InputBlocked = true;
+                    return;
+                }
+
                 if (hit.GameObject.TryGetComponent<PlayerController>(out var hitPlayer))
                 {
                     hitPlayer.Input.InputBlocked = true;
@@ -44,6 +50,12 @@ namespace Ability
         {
             foreach (var hit in _hits)
             {
+                if (hit.GameObject.TryGetComponent<BotAgent>(out var hitBot))
+                {
+                    hitBot.InputBlocked = false;
+                    return;
+                }
+
                 if (hit.GameObject.TryGetComponent<PlayerController>(out var hitPlayer))
                 {
                     hitPlayer.Input.InputBlocked = false;

@@ -7,6 +7,8 @@ namespace GamePlay
     public class PlayerSpawner : NetworkBehaviour
     {
         [SerializeField] private PlayerController[] playerPrefabs = null;
+
+        [SerializeField] private PlayerController botPrefab = null;
     
         public readonly Dictionary<PlayerRef, PlayerController> PlayerList = new Dictionary<PlayerRef, PlayerController>();
     
@@ -30,9 +32,18 @@ namespace GamePlay
                 var index = player.Value.SelectedCharacterIndex - 1;
 
                 index = Mathf.Clamp(index, 0, 4);
-            
-                var playerController = Runner.Spawn(playerPrefabs[index], spawnPoint.position, spawnPoint.rotation, player.Key);
-                
+
+                PlayerController playerController = null;
+                if (Runner.IsSinglePlayer && player.Key != Runner.LocalPlayer)
+                {
+                    playerController = Runner.Spawn(botPrefab, spawnPoint.position, spawnPoint.rotation, player.Key);
+                    print(GameApp.Instance.GetPlayerNetworkData(player.Key).PlayerName);
+                }
+                else
+                {
+                    playerController = Runner.Spawn(playerPrefabs[index], spawnPoint.position, spawnPoint.rotation, player.Key);
+                }
+
                 PlayerList.Add(player.Key, playerController);
             }
         }

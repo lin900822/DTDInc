@@ -1,125 +1,124 @@
 ﻿using Fusion.KCC;
-using System.Collections;
 using UnityEngine;
 
 public class PlayerAgent : Agent
 {
-	public PlayerController playerController = null;
+    public PlayerController playerController = null;
 
-	[SerializeField]
-	private Transform cameraTrans;
+    [SerializeField]
+    private Transform cameraTrans;
 
-	[SerializeField]
-	private float _maxCameraAngle = 75f;
-	[SerializeField]
-	private Vector3 _jumpImpulse = new Vector3(0f, 6f, 0f);
+    [SerializeField]
+    private float _maxCameraAngle = 75f;
+    [SerializeField]
+    private Vector3 _jumpImpulse = new Vector3(0f, 6f, 0f);
 
-	protected override void OnDespawned()
-	{
-		playerController = null;
-	}
+    protected override void OnDespawned()
+    {
+        playerController = null;
+    }
 
-	protected override void ProcessEarlyFixedInput()
-	{
-		if (playerController == null)
-			return;
+    protected override void ProcessEarlyFixedInput()
+    {
+        if (playerController == null)
+            return;
 
-		// Look Rotation Input
+        // Look Rotation Input
 
-		var input = playerController.Input.FixedInput;
+        var input = playerController.Input.FixedInput;
 
-		Vector2 lookRotation = KCC.FixedData.GetLookRotation(true, true);
-		Vector2 lookRotationDelta = KCCUtility.GetClampedLookRotationDelta(lookRotation, input.LookRotationDelta, -_maxCameraAngle, _maxCameraAngle);
+        Vector2 lookRotation = KCC.FixedData.GetLookRotation(true, true);
+        Vector2 lookRotationDelta = KCCUtility.GetClampedLookRotationDelta(lookRotation, input.LookRotationDelta, -_maxCameraAngle, _maxCameraAngle);
 
-		KCC.AddLookRotation(lookRotationDelta);
+        KCC.AddLookRotation(lookRotationDelta);
 
-		// Movement Input
+        // Movement Input
 
-		Vector3 inputDirection = KCC.FixedData.TransformRotation * new Vector3(input.MoveDirection.x, 0.0f, input.MoveDirection.y);
+        Vector3 inputDirection = KCC.FixedData.TransformRotation * new Vector3(input.MoveDirection.x, 0.0f, input.MoveDirection.y);
 
-		KCC.SetInputDirection(inputDirection);
+        KCC.SetInputDirection(inputDirection);
 
-		if (playerController.Input.WasPressed(InputButtons.Jump))
-		{
-			Quaternion jumpRotation = KCC.FixedData.TransformRotation;
+        if (playerController.Input.WasPressed(InputButtons.Jump))
+        {
+            Quaternion jumpRotation = KCC.FixedData.TransformRotation;
 
-			if (inputDirection.IsAlmostZero() == false)
-			{
-				jumpRotation = Quaternion.LookRotation(inputDirection);
-			}
+            if (inputDirection.IsAlmostZero() == false)
+            {
+                jumpRotation = Quaternion.LookRotation(inputDirection);
+            }
 
-			KCC.Jump(jumpRotation * _jumpImpulse);
-		}
+            KCC.Jump(jumpRotation * _jumpImpulse);
+        }
 
-		playerController.AbilityHandler.ProcessInput();
-		playerController.AnimationController.ProcessInput(playerController);
-	}
+        playerController.AbilityHandler.ProcessInput();
+        playerController.AnimationController.ProcessInput(playerController);
+    }
 
     protected override void OnFixedUpdate()
-	{
-		Vector2 pitchRotation = KCC.FixedData.GetLookRotation(true, false);
-		cameraTrans.localRotation = Quaternion.Euler(pitchRotation);
-	}
+    {
+        Vector2 pitchRotation = KCC.FixedData.GetLookRotation(true, false);
+        cameraTrans.localRotation = Quaternion.Euler(pitchRotation);
+    }
 
-	protected override void ProcessLateFixedInput() 
-	{
-		// Weapon Input
-		playerController.AttackHandler.ProcessInput();
-	}
+    protected override void ProcessLateFixedInput()
+    {
+        // Weapon Input
+        playerController.AttackHandler.ProcessInput();
+    }
 
-	protected override void OnLateFixedUpdate() 
-	{
-		
-	}
+    protected override void OnLateFixedUpdate()
+    {
 
-	protected override void ProcessRenderInput()
-	{
-		if (playerController == null)
-			return;
+    }
 
-		// Look Rotation Input
+    protected override void ProcessRenderInput()
+    {
+        if (playerController == null)
+            return;
 
-		var input = playerController.Input;
+        // Look Rotation Input
 
-		Vector2 lookRotation = KCC.FixedData.GetLookRotation(true, true);
+        var input = playerController.Input;
 
-		Vector2 lookRotationDelta = KCCUtility.GetClampedLookRotationDelta(lookRotation, input.CachedInput.LookRotationDelta, -_maxCameraAngle, _maxCameraAngle);
+        Vector2 lookRotation = KCC.FixedData.GetLookRotation(true, true);
 
-		KCC.SetLookRotation(lookRotation + lookRotationDelta);
+        Vector2 lookRotationDelta = KCCUtility.GetClampedLookRotationDelta(lookRotation, input.CachedInput.LookRotationDelta, -_maxCameraAngle, _maxCameraAngle);
 
-		// Movement Input
+        KCC.SetLookRotation(lookRotation + lookRotationDelta);
 
-		Vector3 inputDirection = default;
+        // Movement Input
 
-		Vector3 moveDirection = input.RenderInput.MoveDirection.X0Y();
-		if (moveDirection.IsZero() == false)
-		{
-			inputDirection = KCC.RenderData.TransformRotation * moveDirection;
-		}
+        Vector3 inputDirection = default;
 
-		KCC.SetInputDirection(inputDirection);
+        Vector3 moveDirection = input.RenderInput.MoveDirection.X0Y();
+        if (moveDirection.IsZero() == false)
+        {
+            inputDirection = KCC.RenderData.TransformRotation * moveDirection;
+        }
 
-		if (playerController.Input.WasPressed(InputButtons.Jump))
-		{
-			Quaternion jumpRotation = KCC.RenderData.TransformRotation;
+        KCC.SetInputDirection(inputDirection);
 
-			if (inputDirection.IsZero() == false)
-			{
-				jumpRotation = Quaternion.LookRotation(inputDirection);
-			}
+        if (playerController.Input.WasPressed(InputButtons.Jump))
+        {
+            Quaternion jumpRotation = KCC.RenderData.TransformRotation;
 
-			KCC.Jump(jumpRotation * _jumpImpulse);
-		}
-	}
+            if (inputDirection.IsZero() == false)
+            {
+                jumpRotation = Quaternion.LookRotation(inputDirection);
+            }
 
-	protected override void OnLateRender()
-	{
-		if (Object.HasInputAuthority == true)
-		{
-			Vector2 pitchRotation = KCC.RenderData.GetLookRotation(true, false);
-			cameraTrans.localRotation = Quaternion.Euler(pitchRotation);
-		}
+            KCC.Jump(jumpRotation * _jumpImpulse);
+        }
+    }
 
-		playerController.ThirdPersonCamera.OnRender();
-	}
+    protected override void OnLateRender()
+    {
+        if (Object.HasInputAuthority == true)
+        {
+            Vector2 pitchRotation = KCC.RenderData.GetLookRotation(true, false);
+            cameraTrans.localRotation = Quaternion.Euler(pitchRotation);
+        }
+
+        playerController.ThirdPersonCamera.OnRender();
+    }
 }

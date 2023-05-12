@@ -17,7 +17,9 @@ namespace GamePlay
 
         private float duration = 2f;
         private bool hasFaded = false;
-        
+
+        private bool isDangerTime = false;
+
         private Tween _messageTween;
 
         private void Update()
@@ -53,6 +55,24 @@ namespace GamePlay
             var seconds = Mathf.Floor(secondsLeft % 60f);
 
             timerText.text = secondsLeft > 0 ? $"{minutes:00} : {seconds:00}" : $"00 : 00";
+
+            if (secondsLeft <= 31 && GameManager.Instance.RoundManager.Stage == RoundStage.InGame)
+            {
+                timerText.color = Color.red;
+
+                if (!isDangerTime)
+                {
+                    isDangerTime = true;
+                    timerText.rectTransform.localScale = new Vector3(2f, 2f, 1f);
+                }
+            }
+            else
+            {
+                timerText.color = Color.white;
+            }
+
+            timerText.rectTransform.localScale =
+                Vector3.Lerp(timerText.rectTransform.localScale, Vector3.one, Time.deltaTime * 10f);
         }
 
         [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
