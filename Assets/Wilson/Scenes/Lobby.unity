@@ -1040,6 +1040,7 @@ GameObject:
   - component: {fileID: 915275269}
   - component: {fileID: 915275270}
   - component: {fileID: 915275271}
+  - component: {fileID: 915275272}
   m_Layer: 5
   m_Name: Match Panel
   m_TagString: Untagged
@@ -1099,6 +1100,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   menuManager: {fileID: 2061308625}
   canvasGroup: {fileID: 915275270}
+--- !u!95 &915275272
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 915275268}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4518e198d0ebbd645bc01ec55c29c568, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &945629889
 GameObject:
   m_ObjectHideFlags: 0
@@ -1505,7 +1526,7 @@ GameObject:
   - component: {fileID: 1005262062}
   - component: {fileID: 1005262061}
   m_Layer: 5
-  m_Name: Logo (1)
+  m_Name: Logo_bg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
