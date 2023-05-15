@@ -80,6 +80,7 @@ public class GameApp : MonoBehaviour
             
         foreach (var data in PlayerNetworkDataList)
         {
+            if (data.Value.Object.InputAuthority == 99) continue;
             data.Value.IsReady = false;
             data.Value.SelectedCharacterIndex = -999;
         }

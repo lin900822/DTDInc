@@ -120,6 +120,7 @@ GameObject:
   - component: {fileID: 3149263557733516844}
   - component: {fileID: -3648650774575777719}
   - component: {fileID: 213841549380859254}
+  - component: {fileID: 102943136173085087}
   m_Layer: 11
   m_Name: Bot
   m_TagString: Player
@@ -177,6 +178,7 @@ MonoBehaviour:
   - {fileID: 92523090558888996}
   - {fileID: -3648650774575777719}
   - {fileID: 213841549380859254}
+  - {fileID: 102943136173085087}
   - {fileID: 4186223113558682476}
   - {fileID: 5486491811456760762}
   - {fileID: 3088969681078960313}
@@ -341,6 +343,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
+  playerController: {fileID: 213841549380859254}
+  abilityHolder: {fileID: 102943136173085087}
+  allAbilities:
+  - {fileID: 5486491811456760762}
+  - {fileID: 5486491811456760762}
+  - {fileID: 3088969681078960313}
+  - {fileID: 3088969681078960313}
+  - {fileID: 3088969681078960313}
+  - {fileID: 526507044826560347}
+  - {fileID: 526507044826560347}
+  - {fileID: 489934240046787640}
+  - {fileID: 447319743684634375}
+  - {fileID: 447319743684634375}
+  - {fileID: 447319743684634375}
+  _jumpImpulse: {x: 0, y: 6, z: 0}
   InputBlocked: 0
 --- !u!114 &213841549380859254
 MonoBehaviour:
@@ -369,6 +386,19 @@ MonoBehaviour:
   playerUi: {fileID: 0}
   walkingEffect: {fileID: 1671800506320697789}
   _LastGotHitTime: 0
+--- !u!114 &102943136173085087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 651585162100204918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4fc0b94977bc994e97aa7775cb552c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
 --- !u!1 &651585163260386493
 GameObject:
   m_ObjectHideFlags: 0

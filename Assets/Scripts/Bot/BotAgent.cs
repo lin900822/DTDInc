@@ -1,18 +1,24 @@
+using Ability;
+using Fusion;
 using Fusion.KCC;
 using GamePlay;
-using HappyNerd;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BotAgent : Agent
 {
-    [SerializeField]
-    private Vector3 _jumpImpulse = new Vector3(0f, 6f, 0f);
+    [SerializeField] private PlayerController playerController = null;
+    [SerializeField] private AbilityHolder abilityHolder = null;
+
+    [SerializeField] private List<Ability.Ability> allAbilities = new List<Ability.Ability>();
+
+    [SerializeField] private Vector3 _jumpImpulse = new Vector3(0f, 6f, 0f);
 
     private Coin coin = null;
 
     [HideInInspector] public bool InputBlocked = false;
+
+    [Networked] private TickTimer abilityTimer { get; set; }
 
     private void Start()
     {
@@ -28,7 +34,7 @@ public class BotAgent : Agent
     {
         // Look Rotation Input
 
-        if (Vector3.Distance(coin.transform.position, transform.position) >= 2f)
+        if (Vector3.Distance(coin.transform.position, transform.position) >= 2f && coin.OwnerPlayerRef != Object.InputAuthority)
         {
             var lookVector = coin.transform.position - transform.position;
 
@@ -36,6 +42,10 @@ public class BotAgent : Agent
             angle = lookVector.x < 0 ? -angle : angle;
 
             KCC.SetLookRotation(0, angle);
+        }
+        else
+        {
+
         }
 
         // Movement Input
@@ -56,17 +66,17 @@ public class BotAgent : Agent
 
             KCC.Jump(jumpRotation * _jumpImpulse);
         }
-        
+
     }
 
     protected override void ProcessLateFixedInput()
     {
-        
+
     }
 
     protected override void ProcessRenderInput()
     {
-        
+
     }
 
     protected override void OnFixedUpdate()
@@ -75,5 +85,23 @@ public class BotAgent : Agent
         {
             KCC.SetPosition(SpawnPointManager.Instance.GetRandomSpawnPoint(Runner.Simulation.Tick).position);
         }
+
+        if (abilityTimer.ExpiredOrNotRunning(Runner))
+        {
+            abilityTimer = TickTimer.CreateFromSeconds(Runner, 1.5f);
+            UseAbility();
+        }
+    }
+
+    private void UseAbility()
+    {
+        if (abilityHolder.IsBusy) return;
+
+        ActiveAbility();
+    }
+
+    private void ActiveAbility()
+    {
+        abilityHolder.Activate(playerController, allAbilities[Random.Range(0, allAbilities.Count)]);
     }
 }
