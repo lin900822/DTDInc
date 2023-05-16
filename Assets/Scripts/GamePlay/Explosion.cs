@@ -98,6 +98,7 @@ namespace GamePlay
 
                 if (hit.TryGetComponent<PlayerController>(out var player))
                 {
+                    if (player.Object.InputAuthority == 99) continue;
                     player.CameraHandler.Explosion_RPC();
                 }
             }

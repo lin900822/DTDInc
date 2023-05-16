@@ -18,7 +18,9 @@ public class GameApp : MonoBehaviour
     [SerializeField] private NetworkEvents networkEvents = null;
 
     [SerializeField] private PlayerNetworkData playerNetworkDataPrefab = null;
-        
+       
+    public PlayerNetworkData WinnerData { get; set; }
+
     public Dictionary<PlayerRef, PlayerNetworkData> PlayerNetworkDataList { get; } = new Dictionary<PlayerRef, PlayerNetworkData>();
 
     private float joinRoomTime = -999f;

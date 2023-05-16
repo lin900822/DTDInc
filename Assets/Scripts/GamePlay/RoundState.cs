@@ -99,8 +99,7 @@ namespace GamePlay
         public override void ExitState()
         {
             RoundManager.EndGameOver();
-            GameApp.Instance.Runner.SetActiveScene("Character Selection");
-            GameApp.Instance.ResetAllPlayerData();
+            GameApp.Instance.Runner.SetActiveScene("Result");
         }
 
         private void DetermineWinner()
@@ -117,9 +116,7 @@ namespace GamePlay
                 }
             }
 
-            var winnerName = winnerPlayerData.PlayerName;
-            
-            GameManager.Instance.GameUIManager.ShowMessage_Rpc($"{winnerName} has won the Game !");
+            GameApp.Instance.WinnerData = winnerPlayerData;
         }
     }
 }

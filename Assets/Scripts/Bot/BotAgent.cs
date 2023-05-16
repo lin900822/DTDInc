@@ -95,6 +95,8 @@ public class BotAgent : Agent
 
     private void UseAbility()
     {
+        if (GameManager.Instance.RoundManager.Stage != RoundStage.InGame) return;
+        if (InputBlocked) return;
         if (abilityHolder.IsBusy) return;
 
         ActiveAbility();

@@ -64,7 +64,7 @@ namespace Ability
             print(_hitCubesIndex.Count);
             
             GameManager.Instance.FloorManager.DestroyCubes(_hitCubesIndex.ToArray());
-            
+
             DoCameraShake();
         }
 
@@ -85,6 +85,7 @@ namespace Ability
 
                 if (hit.TryGetComponent<PlayerController>(out var player))
                 {
+                    if (player.Object.InputAuthority == 99) continue;
                     player.CameraHandler.Laser_RPC();
                 }
             }
